@@ -7,14 +7,17 @@ public class User : Entity
 	private readonly List<Like> _admirerLikes = [];
 	private readonly List<Reciprocity> _reciprocities = [];
 
-    public User(long chatId)
+    private User(long chatId)
     {
         ChatId = chatId;
 	}
 
+	// Для EF Core
+	private User() { }
+
 	public long ChatId { get; private set; }
 	public Profile? Profile { get; private set; }
-	public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+	public long? ProfileId { get; private set; }
 	public IReadOnlyList<Reciprocity> Reciprocities => _reciprocities;
 	public IReadOnlyList<Like> AdmirerLikes => _admirerLikes;
 

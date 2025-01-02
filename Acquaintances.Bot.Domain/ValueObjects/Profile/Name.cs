@@ -2,26 +2,26 @@
 
 namespace Acquaintances.Bot.Domain.ValueObjects.Profile;
 
-public class ProfileName : ValueObject
+public class Name : ValueObject
 {
     public const int NameLength = 20;
 
     public string Value { get; private set; }
 
-    private ProfileName(string value)
+    private Name(string value)
     {
         Value = value;
     }
 
-    public static Result<ProfileName> Create(string value)
+    public static Result<Name> Create(string value)
     {
         if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
-            return Result.Failure<ProfileName>("Имя не может быть пустым");
+            return Result.Failure<Name>("Имя не может быть пустым");
 
         if (value.Length > NameLength)
-            return Result.Failure<ProfileName>($"Имя не может быть больше {NameLength} символов");
+            return Result.Failure<Name>($"Имя не может быть больше {NameLength} символов");
 
-        return new ProfileName(value);
+        return new Name(value);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

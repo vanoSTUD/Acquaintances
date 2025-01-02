@@ -2,26 +2,26 @@
 
 namespace Acquaintances.Bot.Domain.ValueObjects.Profile;
 
-public class ProfileDescription : ValueObject
+public class Description : ValueObject
 {
 	public const int DescriptionLength = 200;
 
 	public string Value { get; private set; }
 
-	private ProfileDescription(string value)
+	private Description(string value)
 	{
 		Value = value;
 	}
 
-	public static Result<ProfileDescription> Create(string value)
+	public static Result<Description> Create(string value)
 	{
 		if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
 			value = "";
 
 		if (value.Length > DescriptionLength)
-			return Result.Failure<ProfileDescription>($"Описание не может быть больше {DescriptionLength} символов");
+			return Result.Failure<Description>($"Описание не может быть больше {DescriptionLength} символов");
 
-		return new ProfileDescription(value);
+		return new Description(value);
 	}
 
 	protected override IEnumerable<object> GetEqualityComponents()

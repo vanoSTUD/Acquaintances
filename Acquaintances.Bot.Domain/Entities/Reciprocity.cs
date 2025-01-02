@@ -1,30 +1,31 @@
-﻿using Acquaintances.Bot.Domain.ValueObjects;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 
 namespace Acquaintances.Bot.Domain.Entities;
 
 public class Reciprocity : Entity
 {
-	private Reciprocity(long firstUserId, long secondUserId)
+	private Reciprocity(long recipientId, long admirerId)
 	{
-		RecipientId = firstUserId;
-		AdmirerId = secondUserId;
+		RecipientId = recipientId;
+		AdmirerId = admirerId;
 	}
+
+	// Для EF Core
+	private Reciprocity() { }
 
 	public long RecipientId { get; private set; }
 	public long AdmirerId { get; private set; }
-	public Profile Admirer { get; } = null!;
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	/// <exception cref="InvalidOperationException"></exception>
-	public static Reciprocity Create(long firstUserId, long secondUserId)
+	public static Reciprocity Create(long recipientId, long admirerId)
 	{
-		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(firstUserId);
-		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(secondUserId);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(recipientId);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(admirerId);
 
-		if (firstUserId == secondUserId)
-			throw new InvalidOperationException($"Попытка создания взаимной симпатии для одинаковых id = '{firstUserId}'.");
+		if (recipientId == admirerId)
+			throw new InvalidOperationException($"Попытка создания взаимной симпатии для одинаковых id = '{recipientId}'.");
 
-		return new Reciprocity(firstUserId, secondUserId);
+		return new Reciprocity(recipientId, admirerId);
 	}
 }

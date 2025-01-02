@@ -10,8 +10,11 @@ public class Photo : Entity
 		OwnerId = ownerId;
 	}
 
-	public long SourceId { get; init; }
-	public long OwnerId { get; init; }
+	// Для EF Core
+	private Photo() { }
+
+	public long OwnerId { get; private set; }
+	public long SourceId { get; private set; }
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public static Photo Create(long sourceId, long ownerId)

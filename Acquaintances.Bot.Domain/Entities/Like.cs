@@ -1,29 +1,46 @@
-﻿using CSharpFunctionalExtensions;
+﻿using Acquaintances.Bot.Domain.ValueObjects.Like;
+using CSharpFunctionalExtensions;
 
 namespace Acquaintances.Bot.Domain.Entities;
 
 public class Like : Entity
 {
-	private Like(long senderId, long recipientId)
+	public const int MaxMessageLength = 100;
+	public const int MinMessageLength = 1;
+
+	private Like(long senderId, long recipientId, string? message = null)
 	{
 		SenderId = senderId;
 		RecipientId = recipientId;
+		Message = message;
 	}
 
-	public long RecipientId { get; private set; }
+	// Для EF Core
+    private Like() {}
+
+    public long RecipientId { get; private set; }
 	public long SenderId { get; private set; }
-	public Profile Sender { get; private set; } = null!;
+	public string? Message { get; private set; } 
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	/// <exception cref="InvalidOperationException"></exception>
-	public static Like Create(long senderId, long recipientId)
+	public static Result<Like> Create(long senderId, long recipientId, string? message = null)
 	{
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(senderId, nameof(senderId));
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(recipientId, nameof(recipientId));
 
 		if (senderId == recipientId)
-			throw new InvalidOperationException($"Недопустимо создание {nameof(Like)} с одинаковыми {nameof(RecipientId)} и {nameof(SenderId)} = '{senderId}'");
+			throw new InvalidOperationException($"Недопустимо создание {nameof(Like)} с одинаковыми {nameof(RecipientId)} и {nameof(SenderId)} == '{senderId}'");
 
-		return new Like(senderId, recipientId);
+		if (message != null)
+		{
+			if (message.Length > MaxMessageLength)
+				return Result.Failure<Like>($"Сообщение не может быть больше {MaxMessageLength} символов.");
+
+			if (message.Length < MinMessageLength)
+				return Result.Failure<Like>($"Сообщение не может быть меньше {MinMessageLength} символов.");
+		}
+
+		return new Like(senderId, recipientId, message);
 	}
 }
