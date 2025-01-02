@@ -12,6 +12,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 	}
 
 	public DbSet<User> Users { get; set; }
-	public DbSet<Profile> Profile { get; set; }
+	public DbSet<Profile> Profiles { get; set; }
 	public DbSet<Like> Likes { get; set; }
 }

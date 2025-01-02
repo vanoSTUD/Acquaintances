@@ -1,0 +1,6 @@
+@Acquaintances.Bot.API_HostAddress = http://localhost:5129
+
+GET {{Acquaintances.Bot.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
