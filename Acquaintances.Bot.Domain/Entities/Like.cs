@@ -1,5 +1,4 @@
-﻿using Acquaintances.Bot.Domain.ValueObjects.Like;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 
 namespace Acquaintances.Bot.Domain.Entities;
 

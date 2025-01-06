@@ -22,6 +22,30 @@ namespace Acquaintances.Bot.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.AppUser", b =>
+                {
+                    b.Property<long>("ChatId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ProfileId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TempDataJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ChatId");
+
+                    b.HasIndex("ProfileId")
+                        .IsUnique()
+                        .HasFilter("[ProfileId] IS NOT NULL");
+
+                    b.ToTable("users", (string)null);
+                });
+
             modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.Like", b =>
                 {
                     b.Property<long>("Id")
@@ -55,15 +79,16 @@ namespace Acquaintances.Bot.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("OwnerId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("FileId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("SourceId")
+                    b.Property<long>("ProfileId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("photos", (string)null);
                 });
@@ -80,6 +105,9 @@ namespace Acquaintances.Bot.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
 
                     b.ComplexProperty<Dictionary<string, object>>("Age", "Acquaintances.Bot.Domain.Entities.Profile.Age#Age", b1 =>
                         {
@@ -107,8 +135,8 @@ namespace Acquaintances.Bot.DAL.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
+                                .HasMaxLength(900)
+                                .HasColumnType("nvarchar(900)")
                                 .HasColumnName("Description");
                         });
 
@@ -171,35 +199,18 @@ namespace Acquaintances.Bot.DAL.Migrations
                     b.ToTable("reciprocities", (string)null);
                 });
 
-            modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.User", b =>
+            modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.AppUser", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.HasOne("Acquaintances.Bot.Domain.Entities.Profile", "Profile")
+                        .WithOne("Owner")
+                        .HasForeignKey("Acquaintances.Bot.Domain.Entities.AppUser", "ProfileId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("ChatId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("ProfileId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId")
-                        .IsUnique();
-
-                    b.HasIndex("ProfileId")
-                        .IsUnique()
-                        .HasFilter("[ProfileId] IS NOT NULL");
-
-                    b.ToTable("users", (string)null);
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.Like", b =>
                 {
-                    b.HasOne("Acquaintances.Bot.Domain.Entities.User", null)
+                    b.HasOne("Acquaintances.Bot.Domain.Entities.AppUser", null)
                         .WithMany("AdmirerLikes")
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -208,35 +219,29 @@ namespace Acquaintances.Bot.DAL.Migrations
 
             modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.Photo", b =>
                 {
-                    b.HasOne("Acquaintances.Bot.Domain.Entities.Profile", null)
+                    b.HasOne("Acquaintances.Bot.Domain.Entities.Profile", "Profile")
                         .WithMany("Photos")
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Acquaintances.Bot.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.Reciprocity", b =>
                 {
-                    b.HasOne("Acquaintances.Bot.Domain.Entities.User", null)
+                    b.HasOne("Acquaintances.Bot.Domain.Entities.AppUser", null)
                         .WithMany("Reciprocities")
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.User", b =>
+            modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.AppUser", b =>
                 {
-                    b.HasOne("Acquaintances.Bot.Domain.Entities.Profile", "Profile")
-                        .WithOne("Owner")
-                        .HasForeignKey("Acquaintances.Bot.Domain.Entities.User", "ProfileId");
+                    b.Navigation("AdmirerLikes");
 
-                    b.Navigation("Profile");
+                    b.Navigation("Reciprocities");
                 });
 
             modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.Profile", b =>
@@ -245,13 +250,6 @@ namespace Acquaintances.Bot.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Photos");
-                });
-
-            modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.User", b =>
-                {
-                    b.Navigation("AdmirerLikes");
-
-                    b.Navigation("Reciprocities");
                 });
 #pragma warning restore 612, 618
         }

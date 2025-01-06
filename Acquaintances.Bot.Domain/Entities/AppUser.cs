@@ -1,37 +1,63 @@
-﻿using CSharpFunctionalExtensions;
+﻿using Acquaintances.Bot.Domain.Enums;
+using Acquaintances.Bot.Domain.Models;
+using CSharpFunctionalExtensions;
+using System.Text.Json;
 
 namespace Acquaintances.Bot.Domain.Entities;
 
-public class User : Entity
+public class AppUser
 {
 	private readonly List<Like> _admirerLikes = [];
 	private readonly List<Reciprocity> _reciprocities = [];
 
-    private User(long chatId)
+    private AppUser(long chatId)
     {
         ChatId = chatId;
 	}
 
 	// Для EF Core
-	private User() { }
+	private AppUser() { }
 
 	public long ChatId { get; private set; }
 	public Profile? Profile { get; private set; }
 	public long? ProfileId { get; private set; }
+	public State State { get; private set; } = State.None;
+	public string? TempDataJson { get; private set; }
 	public IReadOnlyList<Reciprocity> Reciprocities => _reciprocities;
 	public IReadOnlyList<Like> AdmirerLikes => _admirerLikes;
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
-	public static User Create(long chatId)
+	public static AppUser Create(long chatId)
 	{
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(chatId, nameof(chatId));
 
-		return new User(chatId);
+		return new AppUser(chatId);
+	}
+
+	public TempProfile? GetTempProfile()
+	{
+		if (TempDataJson == null)
+			return null;
+
+		return JsonSerializer.Deserialize<TempProfile>(TempDataJson);
+	} 
+
+	public void SetTempProfile(TempProfile? tempProfile)
+	{
+		if (tempProfile == null)
+			TempDataJson = null;
+
+		TempDataJson = JsonSerializer.Serialize(tempProfile);
 	}
 
 	public void SetProfile(Profile? profile)
 	{
 		Profile = profile;
+	}
+
+	public void SetState(State state)
+	{
+		State = state;
 	}
 
 	/// <exception cref="ArgumentNullException"></exception>

@@ -1,4 +1,7 @@
-﻿using Acquaintances.Bot.DAL.EF;
+﻿using Acquaintances.Bot.Application.Abstractions;
+using Acquaintances.Bot.DAL.EF;
+using Acquaintances.Bot.DAL.EF.Repositories;
+using Acquaintances.Bot.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,5 +15,13 @@ public static class DependencyInjection
 		{
 			option.UseSqlServer(connectionString);
 		});
+
+		AddRepositories(services);
+	}
+
+	private static void AddRepositories(IServiceCollection services)
+	{
+		services.AddScoped<IRepository<AppUser>, UserRepository>();
+		services.AddScoped<IRepository<Profile>, ProfileReposirory>();
 	}
 }

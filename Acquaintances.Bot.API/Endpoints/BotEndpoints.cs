@@ -1,4 +1,5 @@
-﻿using Acquaintances.Bot.API.Services;
+﻿using Acquaintances.Bot.Application.Abstractions;
+using Acquaintances.Bot.Application.Services;
 using Telegram.Bot.Types;
 
 namespace Acquaintances.Bot.API.Endpoints;
@@ -7,10 +8,10 @@ public static class BotEndpoints
 {
 	public static void MapBotEndpoints(this IEndpointRouteBuilder builder)
 	{
-		builder.MapPost("update", HandleUpdate);
+		builder.MapPost("/", HandleUpdate);
 	}
 
-	private static async Task<IResult> HandleUpdate(Update update, UpdateHandler updateHandler, ExceptionHandler exceptionHandler, CancellationToken ct = default)
+	private static async Task<IResult> HandleUpdate(Update update, IHandler<Update> updateHandler, ExceptionHandler exceptionHandler, CancellationToken ct = default)
 	{
 		try
 		{
@@ -18,7 +19,7 @@ public static class BotEndpoints
 		}
 		catch (Exception ex)
 		{
-			exceptionHandler.Handle(ex);
+			await exceptionHandler.HandleAsync(ex, ct);
 		}
 
 		return Results.Ok();

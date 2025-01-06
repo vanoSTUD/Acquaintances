@@ -13,7 +13,7 @@ public class LikeConfiguration : IEntityTypeConfiguration<Like>
 		builder.HasKey(l => l.Id);
 		builder.Property(l => l.Id).ValueGeneratedOnAdd();
 
-		builder.HasOne<User>().WithMany().HasForeignKey(l => l.RecipientId);
+		builder.HasOne<AppUser>().WithMany().HasForeignKey(l => l.RecipientId);
 
 		builder.Property(l => l.Message).HasMaxLength(Like.MaxMessageLength);
 

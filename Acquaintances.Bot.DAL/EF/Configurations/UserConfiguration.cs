@@ -1,22 +1,27 @@
 ﻿using Acquaintances.Bot.Domain.Entities;
+using Acquaintances.Bot.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Acquaintances.Bot.DAL.EF.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : IEntityTypeConfiguration<AppUser>
 {
-	public void Configure(EntityTypeBuilder<User> builder)
+	public void Configure(EntityTypeBuilder<AppUser> builder)
 	{
 		builder.ToTable("users");
 
-		builder.HasKey(u => u.Id);
-		builder.Property(u => u.Id).ValueGeneratedOnAdd();
+		builder.HasKey(u => u.ChatId);
+		builder.Property(u => u.ChatId).ValueGeneratedNever();
 
-		builder.Property(u => u.ChatId).IsRequired();
-		builder.HasIndex(u => u.ChatId).IsUnique();
+		builder.HasOne(u => u.Profile).WithOne(p => p.Owner).HasForeignKey<AppUser>(u => u.ProfileId);
 
-		builder.HasOne(u => u.Profile).WithOne(p => p.Owner).HasForeignKey<User>(u => u.ProfileId);
+		builder.Property(u => u.State)
+			.HasConversion(
+				state => state.ToString(),        // Преобразование Enum -> String
+				state => (State)Enum.Parse(typeof(State), state) // Преобразование String -> Enum
+			);
+		builder.Property(u => u.TempDataJson);
 
 		builder.HasMany(u => u.AdmirerLikes).WithOne().HasForeignKey(l => l.RecipientId);
 		builder.HasMany(u => u.Reciprocities).WithOne().HasForeignKey(l => l.RecipientId);

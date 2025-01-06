@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>83b8f773-a6eb-49e5-aee0-6ebb3dc0e8e9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,10 +12,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Telegram.Bot" Version="22.2.0" />
+    <PackageReference Include="Telegram.Bot" Version="22.3.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Acquaintances.Bot.Application\Acquaintances.Bot.Application.csproj" />
     <ProjectReference Include="..\Acquaintances.Bot.DAL\Acquaintances.Bot.DAL.csproj" />
     <ProjectReference Include="..\Acquaintances.Bot.Domain\Acquaintances.Bot.Domain.csproj" />
   </ItemGroup>
