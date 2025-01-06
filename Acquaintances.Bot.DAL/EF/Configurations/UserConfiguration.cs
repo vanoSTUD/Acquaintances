@@ -13,11 +13,10 @@ public class UserConfiguration : IEntityTypeConfiguration<AppUser>
 
 		builder.HasKey(u => u.ChatId);
 		builder.Property(u => u.ChatId).ValueGeneratedNever();
-		
+
 		builder.HasOne(u => u.Profile)
 			.WithOne(p => p.Owner)
-			.HasForeignKey<AppUser>(u => u.ProfileId)
-			.OnDelete(DeleteBehavior.Cascade);
+			.HasForeignKey<AppUser>(u => u.ProfileId);
 
 		builder.Property(u => u.State)
 			.HasConversion(
@@ -28,13 +27,10 @@ public class UserConfiguration : IEntityTypeConfiguration<AppUser>
 
 		builder.HasMany(u => u.AdmirerLikes)
 			.WithOne()
-			.HasForeignKey(l => l.RecipientId)
-			.OnDelete(DeleteBehavior.Cascade);
-
+			.HasForeignKey(l => l.RecipientId);
 		builder.HasMany(u => u.Reciprocities)
 			.WithOne()
-			.HasForeignKey(l => l.RecipientId)
-			.OnDelete(DeleteBehavior.Cascade); 
+			.HasForeignKey(l => l.RecipientId);
 
 		builder.Navigation(u => u.AdmirerLikes).UsePropertyAccessMode(PropertyAccessMode.Field);
 		builder.Navigation(u => u.Reciprocities).UsePropertyAccessMode(PropertyAccessMode.Field);

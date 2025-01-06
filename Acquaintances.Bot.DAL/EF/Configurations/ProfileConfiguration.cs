@@ -16,32 +16,32 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
 
 		builder.HasOne(p => p.Owner)
 			.WithOne(u => u.Profile)
-			.HasForeignKey<Profile>(p => p.OwnerId);
+			.HasForeignKey<Profile>(p => p.OwnerId)
+			.OnDelete(DeleteBehavior.Cascade);
 
 		builder.HasMany(p => p.Photos)
 			.WithOne(p => p.Profile)
-			.HasForeignKey(p => p.ProfileId)
-			.OnDelete(DeleteBehavior.Cascade); 
+			.HasForeignKey(p => p.ProfileId);
 
 		builder.ComplexProperty(p => p.Name, b =>
 		{
 			b.IsRequired();
 			b.Property(n => n.Value)
-				.HasColumnName("Name")
+				.HasColumnName(nameof(Name))
 				.HasMaxLength(Name.NameLength);
 		});
 		builder.ComplexProperty(p => p.Description, b =>
 		{
 			b.IsRequired();
 			b.Property(n => n.Value)
-				.HasColumnName("Description")
+				.HasColumnName(nameof(Description))
 				.HasMaxLength(Description.DescriptionLength);
 		});
 		builder.ComplexProperty(p => p.City, b =>
 		{
 			b.IsRequired();
 			b.Property(n => n.Value)
-				.HasColumnName("City")
+				.HasColumnName(nameof(City))
 				.HasMaxLength(City.CityLength);
 		});
 		builder.ComplexProperty(p => p.Age, b =>
@@ -53,14 +53,14 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
 		{
 			b.IsRequired();
 			b.Property(n => n.Value)
-				.HasColumnName("Gender")
+				.HasColumnName(nameof(Gender))
 				.HasMaxLength(Gender.MaxLength);
 		});
 		builder.ComplexProperty(p => p.PreferredGender, b =>
 		{
 			b.IsRequired();
 			b.Property(n => n.Value)
-				.HasColumnName("PreferredGender")
+				.HasColumnName($"Preferred{nameof(Gender)}")
 				.HasMaxLength(Gender.MaxLength);
 		});
 

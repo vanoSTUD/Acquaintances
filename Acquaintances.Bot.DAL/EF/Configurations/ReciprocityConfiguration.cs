@@ -14,9 +14,11 @@ public class ReciprocityConfiguration : IEntityTypeConfiguration<Reciprocity>
 		builder.Property(r => r.Id).ValueGeneratedOnAdd();
 
 		builder.Property(r => r.RecipientId).IsRequired();
-		builder.HasOne<AppUser>().WithMany().HasForeignKey(p => p.RecipientId);
+		builder.HasOne<AppUser>()
+			.WithMany()
+			.HasForeignKey(p => p.RecipientId)
+			.OnDelete(DeleteBehavior.Cascade); 
 
 		builder.Property(r => r.AdmirerId).IsRequired();
-		
 	}
 }

@@ -14,7 +14,10 @@ public class PhotoConfiguration : IEntityTypeConfiguration<Photo>
 		builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
 		builder.Property(p => p.ProfileId).IsRequired();
-		builder.HasOne(p => p.Profile).WithMany(p => p.Photos).HasForeignKey(p => p.ProfileId);
+		builder.HasOne(p => p.Profile)
+			.WithMany(p => p.Photos)
+			.HasForeignKey(p => p.ProfileId)
+			.OnDelete(DeleteBehavior.Cascade);
 
 		builder.Property(p => p.FileId).IsRequired();
 	}
