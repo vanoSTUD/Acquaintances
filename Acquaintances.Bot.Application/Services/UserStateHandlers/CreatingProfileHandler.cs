@@ -31,7 +31,7 @@ public class CreatingProfileHandler : StateHandlerBase
 		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 		var user = await userService.GetOrCreateAsync(chatId, ct);
 
-		await _bot.SendMessageHtml(chatId, "Введи своё имя:", cancellationToken: ct);
+		await _bot.SendMessageHtml(chatId, "Создание анкеты. \nВведи своё имя:", cancellationToken: ct);
 
         await userService.SetStateAsync(user, State.EnteringName, ct);
     }

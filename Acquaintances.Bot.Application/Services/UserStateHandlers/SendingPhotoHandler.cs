@@ -65,11 +65,11 @@ public class SendingPhotoHandler : StateHandlerBase
 		if (photoCount >= Profile.MaxPhotos)
 		{
 			var result = await userService.AddProfileAsync(user, tempProfile);
+			await userService.SetStateAsync(user, State.None, ct);
 
 			if (result.IsFailure)
 			{
 				await _bot.SendMessageHtml(chatId, result.Error, cancellationToken: ct);
-				await userService.SetStateAsync(user, State.None, ct);
 				return;
 			}
 

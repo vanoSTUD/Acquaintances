@@ -30,6 +30,15 @@ public class ProfileReposirory : IRepository<Profile>
 		return await GetProfileAsync(id);
 	}
 
+	public async Task RemoveAsync(Profile entity, CancellationToken ct = default)
+	{
+		if (_db.Profiles.Find(entity.Id) == null)
+			return;
+
+		_db.Remove(entity);
+		await _db.SaveChangesAsync(ct);
+	}
+
 	public Task<Profile> UpdateAsync(Profile entity, CancellationToken ct = default)
 	{
 		throw new NotImplementedException();

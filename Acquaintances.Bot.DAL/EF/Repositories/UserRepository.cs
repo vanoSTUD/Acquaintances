@@ -35,6 +35,15 @@ public class UserRepository : IRepository<AppUser>
 		return await GetUserAsync(id, ct);
 	}
 
+	public async Task RemoveAsync(AppUser entity, CancellationToken ct) 
+	{ 
+		if (_db.Users.Find(entity.ChatId) == null)
+			return;
+
+		_db.Remove(entity);
+		await _db.SaveChangesAsync(ct);
+	}
+
 	public async Task<AppUser> UpdateAsync(AppUser entity, CancellationToken ct = default)
 	{
 		ArgumentNullException.ThrowIfNull(entity, nameof(entity));

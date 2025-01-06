@@ -47,7 +47,7 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
 		builder.ComplexProperty(p => p.Age, b =>
 		{
 			b.IsRequired();
-			b.Property(n => n.Value).HasColumnName("Age");
+			b.Property(n => n.Value).HasColumnName(nameof(Age));
 		});
 		builder.ComplexProperty(p => p.Gender, b =>
 		{

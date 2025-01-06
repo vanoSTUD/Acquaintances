@@ -48,10 +48,16 @@ public class UserService : IUserService
 				return Result.Failure($"Ошибка! {profileResult.Error}. \nПопробуй {CommandNames.Start}");
 			}
 
+			await _profileRepository.CreateAsync(profileResult.Value);
+			var oldProfile = user.Profile;
 			user.SetProfile(profileResult.Value);
 
 			await _userRepository.UpdateAsync(user);
-			await _profileRepository.CreateAsync(profileResult.Value);
+
+			if (oldProfile != null)
+			{
+				await _profileRepository.RemoveAsync(oldProfile);
+			}
 
 			return Result.Success();
 		}
