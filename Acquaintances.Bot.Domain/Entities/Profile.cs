@@ -3,6 +3,9 @@ using CSharpFunctionalExtensions;
 
 namespace Acquaintances.Bot.Domain.Entities;
 
+/// <summary>
+/// Анкета
+/// </summary>
 public class Profile : Entity
 {
 	public const int MaxPhotos = 3;
@@ -24,16 +27,52 @@ public class Profile : Entity
 	// Для EF Core
 	private Profile() { }
 
+	/// <summary>
+	/// Id владельца профиля - AppUser
+	/// </summary>
 	public long OwnerId { get; private set; }
 	public AppUser Owner { get; private set; } = null!;
+
+	/// <summary>
+	/// Имя в анкете
+	/// </summary>
 	public Name Name { get; private set; } = null!;
+
+	/// <summary>
+	/// Описание анкеты
+	/// </summary>
 	public Description Description { get; private set; } = null!;
+
+	/// <summary>
+	/// Город анкеты
+	/// </summary>
 	public City City { get; private set; } = null!;
+
+	/// <summary>
+	/// Возраст в анкете
+	/// </summary>
 	public Age Age { get; private set; } = null!;
+
+	/// <summary>
+	/// Пол владельца анкеты
+	/// </summary>
 	public Gender Gender { get; private set; } = null!;
+
+	/// <summary>
+	/// Предпочитаемый пол
+	/// </summary>
 	public Gender PreferredGender { get; private set; } = null!;
+
+	/// <summary>
+	/// Активна ли анкета в данный момент
+	/// </summary>
 	public bool Active { get; private set; }
+
+	/// <summary>
+	/// Фотографии профиля
+	/// </summary>
 	public IReadOnlyList<Photo> Photos => _photos;
+
 
 	/// <exception cref="ArgumentNullException"></exception>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>

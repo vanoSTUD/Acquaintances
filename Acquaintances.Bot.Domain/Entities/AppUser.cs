@@ -5,6 +5,9 @@ using System.Text.Json;
 
 namespace Acquaintances.Bot.Domain.Entities;
 
+/// <summary>
+/// Пользователь бота
+/// </summary>
 public class AppUser
 {
 	private readonly List<Like> _admirerLikes = [];
@@ -18,13 +21,37 @@ public class AppUser
 	// Для EF Core
 	private AppUser() { }
 
+	/// <summary>
+	/// Id чата в телеграме. Уникален для каждого пользователя в чичной переписке
+	/// </summary>
 	public long ChatId { get; private set; }
+	/// <summary>
+	/// Анкета пользователя
+	/// </summary>
+	
 	public Profile? Profile { get; private set; }
 	public long? ProfileId { get; private set; }
+
+	/// <summary>
+	/// Состояние, в котором прибывает пользователь
+	/// </summary>
 	public State State { get; private set; } = State.None;
+
+	/// <summary>
+	/// Временные данные, например данные создания анкеты
+	/// </summary>
 	public string? TempDataJson { get; private set; }
+
+	/// <summary>
+	/// Совпадения по лайкам
+	/// </summary>
 	public IReadOnlyList<Reciprocity> Reciprocities => _reciprocities;
+
+	/// <summary>
+	/// Полученные лайки от других пользователей
+	/// </summary>
 	public IReadOnlyList<Like> AdmirerLikes => _admirerLikes;
+
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public static AppUser Create(long chatId)
@@ -60,6 +87,7 @@ public class AppUser
 		State = state;
 	}
 
+	
 	/// <exception cref="ArgumentNullException"></exception>
 	public Result AddAdmirerLike(Like like)
 	{

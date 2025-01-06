@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Acquaintances.Bot.Domain.Entities;
 
+/// <summary>
+/// Фотограя
+/// </summary>
 public class Photo : Entity
 {
 	protected Photo(string sourceId, long profileId)
@@ -15,11 +18,18 @@ public class Photo : Entity
 	[JsonConstructor]
 	protected Photo() { }
 
+	/// <summary>
+	/// Id владельца фотографий - Profile
+	/// </summary>
 	[JsonInclude]
 	public long ProfileId { get; private set; }
+	public Profile Profile { get; private set; } = null!;
+
+	/// <summary>
+	/// Id файла на серверах Telegram
+	/// </summary>
 	[JsonInclude]
 	public string FileId { get; private set; } = null!;
-	public Profile Profile { get; private set; } = null!;
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	/// <exception cref="ArgumentException"></exception>

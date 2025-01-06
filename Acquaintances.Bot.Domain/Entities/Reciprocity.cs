@@ -2,6 +2,9 @@
 
 namespace Acquaintances.Bot.Domain.Entities;
 
+/// <summary>
+/// Взаимная симпатия 
+/// </summary>
 public class Reciprocity : Entity
 {
 	private Reciprocity(long recipientId, long admirerId)
@@ -13,7 +16,14 @@ public class Reciprocity : Entity
 	// Для EF Core
 	private Reciprocity() { }
 
+	/// <summary>
+	/// Id получателя взаимной симпатии - AppUser
+	/// </summary>
 	public long RecipientId { get; private set; }
+
+	/// <summary>
+	/// Id анкеты, с которой есть взаимная симпатия
+	/// </summary>
 	public long AdmirerId { get; private set; }
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>

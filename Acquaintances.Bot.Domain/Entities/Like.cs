@@ -2,6 +2,9 @@
 
 namespace Acquaintances.Bot.Domain.Entities;
 
+/// <summary>
+/// Лайк
+/// </summary>
 public class Like : Entity
 {
 	public const int MaxMessageLength = 100;
@@ -17,9 +20,21 @@ public class Like : Entity
 	// Для EF Core
     private Like() {}
 
+	/// <summary>
+	/// Id получателя лайка - AppUser
+	/// </summary>
     public long RecipientId { get; private set; }
+
+	/// <summary>
+	/// Id отправителя лайка - AppUser
+	/// </summary>
 	public long SenderId { get; private set; }
+
+	/// <summary>
+	/// Сообщение от отправителя лайка
+	/// </summary>
 	public string? Message { get; private set; } 
+
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	/// <exception cref="InvalidOperationException"></exception>
