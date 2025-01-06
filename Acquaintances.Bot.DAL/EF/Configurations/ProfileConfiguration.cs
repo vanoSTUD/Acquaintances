@@ -14,9 +14,14 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
 		builder.HasKey(p => p.Id);
 		builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
-		builder.HasOne(p => p.Owner).WithOne(u => u.Profile).HasForeignKey<Profile>(p => p.OwnerId);
+		builder.HasOne(p => p.Owner)
+			.WithOne(u => u.Profile)
+			.HasForeignKey<Profile>(p => p.OwnerId);
 
-		builder.HasMany(p => p.Photos).WithOne(p => p.Profile).HasForeignKey(p => p.ProfileId);
+		builder.HasMany(p => p.Photos)
+			.WithOne(p => p.Profile)
+			.HasForeignKey(p => p.ProfileId)
+			.OnDelete(DeleteBehavior.Cascade); 
 
 		builder.ComplexProperty(p => p.Name, b =>
 		{
