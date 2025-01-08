@@ -19,10 +19,8 @@ public class Age : ValueObject
 	public static Result<Age> Create(string? value)
 	{
 		if (value == null || !int.TryParse(value, out int age))
-		{
 			return Result.Failure<Age>("Некорректный формат возраста.");
-		}
-
+		
 		if (age > MaxAge)
 			return Result.Failure<Age>($"Возраст не может быть больше {MaxAge} лет.");
 		

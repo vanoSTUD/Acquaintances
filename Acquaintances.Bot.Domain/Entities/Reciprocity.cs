@@ -17,12 +17,12 @@ public class Reciprocity : Entity
 	private Reciprocity() { }
 
 	/// <summary>
-	/// Id получателя взаимной симпатии - AppUser
+	/// Id анкеты владельца
 	/// </summary>
 	public long RecipientId { get; private set; }
 
 	/// <summary>
-	/// Id анкеты, с которой есть взаимная симпатия
+	/// Id анкеты, с которой взаимная симпатия
 	/// </summary>
 	public long AdmirerId { get; private set; }
 

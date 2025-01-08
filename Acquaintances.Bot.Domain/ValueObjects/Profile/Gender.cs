@@ -8,7 +8,7 @@ public class Gender : ValueObject
 	public const int MaxLength = 20;
 	public static Gender Male => new ("Парень");
 	public static Gender Female => new ("Девушка");
-	public static Gender All => new ("Без разницы");
+	public static Gender All => new ("Все равно");
 
 	private static readonly List<Gender> _genderList = [Male, Female, All];
 
@@ -23,15 +23,11 @@ public class Gender : ValueObject
 	public static Result<Gender> Create(string? value, bool isPreferred)
 	{
 		if (value == null || !_genderList.Any(x => x.Value == value))
-		{
 			return Result.Failure<Gender>("Некорректный формат.");
-		}
-
+		
 		if (isPreferred == false && value == All.Value)
-		{
 			return Result.Failure<Gender>("Некорректный формат.");
-		} 
-
+		
 		return new Gender(value);
 	}
 

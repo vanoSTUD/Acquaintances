@@ -5,7 +5,8 @@ namespace Acquaintances.Bot.Domain.ValueObjects.Profile;
 
 public class Name : ValueObject
 {
-    public const int NameLength = 20;
+    public const int MaxLength = 25;
+    public const int MinLength = 1;
 
     public string Value { get; private set; }
 
@@ -20,10 +21,13 @@ public class Name : ValueObject
         if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
             return Result.Failure<Name>("Имя не может быть пустым");
 
-        if (value.Trim().Length > NameLength)
-            return Result.Failure<Name>($"Имя не может быть больше {NameLength} символов");
+        if (value.Trim().Length > MaxLength)
+            return Result.Failure<Name>($"Имя не может быть больше {MaxLength} символов(а)");
 
-        return new Name(value);
+		if (value.Trim().Length < MinLength)
+			return Result.Failure<Name>($"Имя не может быть меньше {MinLength} символов(а)");
+
+		return new Name(value);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

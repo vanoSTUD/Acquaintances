@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Acquaintances.Bot.DAL.EF.Repositories;
 
-public class UserRepository : IRepository<AppUser>
+public class UsersRepository : IRepository<AppUser>
 {
 	private readonly AppDbContext _db;
 
-	public UserRepository(AppDbContext db)
+	public UsersRepository(AppDbContext db)
 	{
 		_db = db;
 	}
@@ -57,10 +57,12 @@ public class UserRepository : IRepository<AppUser>
 	private async Task<AppUser?> GetUserAsync(long chatId, CancellationToken ct = default)
 	{
 		var foundUser = await _db.Users
-			.Include(u => u.AdmirerLikes)
-			.Include(u => u.Reciprocities)
 			.Include(u => u.Profile)
 				.ThenInclude(p => p.Photos)
+			.Include(u => u.Profile)
+				.ThenInclude(p => p.AdmirerLikes)
+			.Include(u => u.Profile)
+				.ThenInclude(p => p.Reciprocities)
 			.FirstOrDefaultAsync(u => u.ChatId.Equals(chatId), ct);
 
 		return foundUser;

@@ -22,16 +22,16 @@ public static class BotMessagesHelper
 		await bot.SendMessageHtml(chatId, commands, keyboard);
 	}
 
-	public static async Task SendProfile(ITelegramBotClient bot, AppUser user)
+	public static async Task SendProfile(ITelegramBotClient bot, long chatId, Profile? profile)
 	{
-		if (user.Profile == null)
+		if (profile == null)
 			return;
 
-		var photoIds = user.Profile.Photos.Select(p => p.FileId).ToArray();
+		var photoIds = profile.Photos.Select(p => p.FileId).ToArray();
 		var photoGroup = photoIds.Select(p => new InputMediaPhoto(p)).ToList();
-		photoGroup.First().Caption = user.Profile.GetFullCaption();
+		photoGroup.First().Caption = profile.GetFullCaption();
 
-		await bot.SendMessageHtml(user.ChatId, "Вот твой профиль:");
-		await bot.SendMediaGroup(user.ChatId, photoGroup);
+		await bot.SendMessageHtml(chatId, "Вот твой профиль:");
+		await bot.SendMediaGroup(chatId, photoGroup);
 	}
 }

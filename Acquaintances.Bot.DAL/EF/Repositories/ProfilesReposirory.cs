@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Acquaintances.Bot.DAL.EF.Repositories;
 
-public class ProfileReposirory : IRepository<Profile>
+public class ProfilesReposirory : IRepository<Profile>
 {
 	private readonly AppDbContext _db;
 
-	public ProfileReposirory(AppDbContext db)
+	public ProfilesReposirory(AppDbContext db)
 	{
 		_db = db;
 	}

@@ -21,7 +21,7 @@ public static class DependencyInjection
 
 	private static void AddRepositories(IServiceCollection services)
 	{
-		services.AddScoped<IRepository<AppUser>, UserRepository>();
-		services.AddScoped<IRepository<Profile>, ProfileReposirory>();
+		services.AddScoped<IRepository<AppUser>, UsersRepository>();
+		services.AddScoped<IRepository<Profile>, ProfilesReposirory>();
 	}
 }

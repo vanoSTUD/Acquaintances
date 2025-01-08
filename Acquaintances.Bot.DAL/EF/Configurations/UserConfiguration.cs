@@ -1,7 +1,9 @@
 ﻿using Acquaintances.Bot.Domain.Entities;
 using Acquaintances.Bot.Domain.Enums;
+using Acquaintances.Bot.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Text.Json;
 
 namespace Acquaintances.Bot.DAL.EF.Configurations;
 
@@ -20,19 +22,14 @@ public class UserConfiguration : IEntityTypeConfiguration<AppUser>
 
 		builder.Property(u => u.State)
 			.HasConversion(
-				state => state.ToString(),        // Преобразование Enum -> String
+				state => state.ToString(),  // Преобразование Enum -> String
 				state => (State)Enum.Parse(typeof(State), state) // Преобразование String -> Enum
 			);
-		builder.Property(u => u.TempDataJson);
 
-		builder.HasMany(u => u.AdmirerLikes)
-			.WithOne()
-			.HasForeignKey(l => l.RecipientId);
-		builder.HasMany(u => u.Reciprocities)
-			.WithOne()
-			.HasForeignKey(l => l.RecipientId);
-
-		builder.Navigation(u => u.AdmirerLikes).UsePropertyAccessMode(PropertyAccessMode.Field);
-		builder.Navigation(u => u.Reciprocities).UsePropertyAccessMode(PropertyAccessMode.Field);
+		builder.Property(u => u.TempProfile)
+			.HasConversion(
+				profileJson => JsonSerializer.Serialize(profileJson, (JsonSerializerOptions?) null),
+				profile => JsonSerializer.Deserialize<TempProfile>(profile, (JsonSerializerOptions?) null)
+			);
 	}
 }

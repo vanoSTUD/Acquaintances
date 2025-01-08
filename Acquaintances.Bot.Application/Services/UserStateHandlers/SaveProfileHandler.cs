@@ -35,7 +35,7 @@ public class SaveProfileHandler : StateHandlerBase
 
 		await userService.SetStateAsync(user, State.None, ct);
 		
-		var tempProfile = user.GetTempProfile();
+		var tempProfile = user.TempProfile;
 
 		if (tempProfile == null)
 		{
@@ -51,10 +51,8 @@ public class SaveProfileHandler : StateHandlerBase
 		}
 		else
 		{
-			await BotMessagesHelper.SendProfile(_bot, user);
+			await BotMessagesHelper.SendProfile(_bot, chatId, user.Profile);
 			await BotMessagesHelper.SendProfileCommands(_bot, chatId);
 		}
-
-		
 	}
 }

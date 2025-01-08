@@ -42,7 +42,7 @@ public class EnteringAgeHandler : StateHandlerBase
 		using var scope = _scopeFactory.CreateScope();
 		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 		var user = await userService.GetOrCreateAsync(chatId, ct);
-		var tempProfile = user.GetTempProfile();
+		var tempProfile = user.TempProfile;
 
         if (tempProfile == null)
         {

@@ -13,8 +13,8 @@ public class LikeConfiguration : IEntityTypeConfiguration<Like>
 		builder.HasKey(l => l.Id);
 		builder.Property(l => l.Id).ValueGeneratedOnAdd();
 
-		builder.HasOne<AppUser>()
-			.WithMany()
+		builder.HasOne<Profile>()
+			.WithMany(p => p.AdmirerLikes)
 			.HasForeignKey(l => l.RecipientId)
 			.OnDelete(DeleteBehavior.Cascade);
 

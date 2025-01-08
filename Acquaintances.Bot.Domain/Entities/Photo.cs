@@ -23,6 +23,8 @@ public class Photo : Entity
 	/// </summary>
 	[JsonInclude]
 	public long ProfileId { get; private set; }
+
+	[JsonIgnore]
 	public Profile Profile { get; private set; } = null!;
 
 	/// <summary>

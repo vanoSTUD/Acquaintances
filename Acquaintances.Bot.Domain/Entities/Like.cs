@@ -21,12 +21,12 @@ public class Like : Entity
     private Like() {}
 
 	/// <summary>
-	/// Id получателя лайка - AppUser
+	/// Id профиля - получателя лайка
 	/// </summary>
     public long RecipientId { get; private set; }
 
 	/// <summary>
-	/// Id отправителя лайка - AppUser
+	/// Id профиля - отправителя лайка
 	/// </summary>
 	public long SenderId { get; private set; }
 

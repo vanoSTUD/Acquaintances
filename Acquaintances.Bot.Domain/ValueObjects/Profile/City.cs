@@ -1,11 +1,15 @@
 ﻿using CSharpFunctionalExtensions;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace Acquaintances.Bot.Domain.ValueObjects.Profile;
 
 public class City : ValueObject
 {
-	public const int CityLength = 50;
+	public const int MaxLength = 25;
+	public const int MinLength = 1;
+
+	private static readonly Regex _inputRegex = new("^[a-zA-Zа-яА-Я \\-`']+$");
 
 	public string Value { get; private set; }
 
@@ -18,10 +22,16 @@ public class City : ValueObject
 	public static Result<City> Create(string? value)
 	{
 		if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
-			return Result.Failure<City>($"Не выявлено названия города.");
+			return Result.Failure<City>($"Название города не должно быть пустым.");
 
-		if (value.Trim().Length > CityLength)
-			return Result.Failure<City>($"Город не может быть длинее {CityLength} символов.");
+		if (_inputRegex.IsMatch(value) == false)
+			return Result.Failure<City>($"Название города должно состоять только из русских и англ. букв.");
+
+		if (value.Trim().Length < MinLength)
+			return Result.Failure<City>($"Город не может быть меньше {MinLength} символов(а).");
+
+		if (value.Trim().Length > MaxLength)
+			return Result.Failure<City>($"Город не может быть длинее {MaxLength} символов(а).");
 
 		return new City(value);
 	}

@@ -28,21 +28,21 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
 			b.IsRequired();
 			b.Property(n => n.Value)
 				.HasColumnName(nameof(Name))
-				.HasMaxLength(Name.NameLength);
+				.HasMaxLength(Name.MaxLength);
 		});
 		builder.ComplexProperty(p => p.Description, b =>
 		{
 			b.IsRequired();
 			b.Property(n => n.Value)
 				.HasColumnName(nameof(Description))
-				.HasMaxLength(Description.DescriptionLength);
+				.HasMaxLength(Description.MaxLength);
 		});
 		builder.ComplexProperty(p => p.City, b =>
 		{
 			b.IsRequired();
 			b.Property(n => n.Value)
 				.HasColumnName(nameof(City))
-				.HasMaxLength(City.CityLength);
+				.HasMaxLength(City.MaxLength);
 		});
 		builder.ComplexProperty(p => p.Age, b =>
 		{
@@ -64,8 +64,17 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
 				.HasMaxLength(Gender.MaxLength);
 		});
 
-		builder.Property(p => p.Active).HasDefaultValue(true);
+		builder.Property(p => p.Active);
+		builder.HasMany(p => p.AdmirerLikes)
+			.WithOne()
+			.HasForeignKey(l => l.RecipientId);
 
+		builder.HasMany(p => p.Reciprocities)
+			.WithOne()
+			.HasForeignKey(l => l.RecipientId);
+
+		builder.Navigation(p => p.AdmirerLikes).UsePropertyAccessMode(PropertyAccessMode.Field);
+		builder.Navigation(p => p.Reciprocities).UsePropertyAccessMode(PropertyAccessMode.Field);
 		builder.Navigation(p => p.Photos).UsePropertyAccessMode(PropertyAccessMode.Field);
 	}
 }

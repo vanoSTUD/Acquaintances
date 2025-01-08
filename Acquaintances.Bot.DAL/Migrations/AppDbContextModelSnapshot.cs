@@ -34,7 +34,7 @@ namespace Acquaintances.Bot.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TempDataJson")
+                    b.Property<string>("TempProfile")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ChatId");
@@ -102,9 +102,7 @@ namespace Acquaintances.Bot.DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
@@ -211,7 +209,7 @@ namespace Acquaintances.Bot.DAL.Migrations
 
             modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.Like", b =>
                 {
-                    b.HasOne("Acquaintances.Bot.Domain.Entities.AppUser", null)
+                    b.HasOne("Acquaintances.Bot.Domain.Entities.Profile", null)
                         .WithMany("AdmirerLikes")
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -231,26 +229,23 @@ namespace Acquaintances.Bot.DAL.Migrations
 
             modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.Reciprocity", b =>
                 {
-                    b.HasOne("Acquaintances.Bot.Domain.Entities.AppUser", null)
+                    b.HasOne("Acquaintances.Bot.Domain.Entities.Profile", null)
                         .WithMany("Reciprocities")
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.AppUser", b =>
+            modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.Profile", b =>
                 {
                     b.Navigation("AdmirerLikes");
 
-                    b.Navigation("Reciprocities");
-                });
-
-            modelBuilder.Entity("Acquaintances.Bot.Domain.Entities.Profile", b =>
-                {
                     b.Navigation("Owner")
                         .IsRequired();
 
                     b.Navigation("Photos");
+
+                    b.Navigation("Reciprocities");
                 });
 #pragma warning restore 612, 618
         }

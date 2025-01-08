@@ -48,7 +48,7 @@ public class SendingPhotoHandler : StateHandlerBase
 		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 		var user = await userService.GetOrCreateAsync(chatId, ct);
 
-		var tempProfile = user.GetTempProfile();
+		var tempProfile = user.TempProfile;
 
 		if (tempProfile == null)
 		{
@@ -73,7 +73,7 @@ public class SendingPhotoHandler : StateHandlerBase
 				return;
 			}
 
-			await BotMessagesHelper.SendProfile(_bot, user);
+			await BotMessagesHelper.SendProfile(_bot, chatId, user.Profile);
 			await BotMessagesHelper.SendProfileCommands(_bot, chatId);
 			return;
 		}

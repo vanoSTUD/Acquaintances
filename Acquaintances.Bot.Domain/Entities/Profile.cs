@@ -8,8 +8,12 @@ namespace Acquaintances.Bot.Domain.Entities;
 /// </summary>
 public class Profile : Entity
 {
+	public const bool DefaultActive = true;
+
 	public const int MaxPhotos = 3;
 	private readonly List<Photo> _photos = null!;
+	private readonly List<Like> _admirerLikes = [];
+	private readonly List<Reciprocity> _reciprocities = [];
 
 	private Profile(long ownerId, Name name, Description description, City city, Age age, Gender gender, Gender preferredGender, List<Photo> photos)
 	{
@@ -20,7 +24,7 @@ public class Profile : Entity
 		OwnerId = ownerId;
 		Description = description;
 		PreferredGender = preferredGender;
-		Active = true;
+		Active = DefaultActive;
 		_photos = photos;
 	}
 
@@ -73,6 +77,16 @@ public class Profile : Entity
 	/// </summary>
 	public IReadOnlyList<Photo> Photos => _photos;
 
+	/// <summary>
+	/// Взаимные симпатии
+	/// </summary>
+	public IReadOnlyList<Reciprocity> Reciprocities => _reciprocities;
+
+	/// <summary>
+	/// Полученные лайки от других пользователей
+	/// </summary>
+	public IReadOnlyList<Like> AdmirerLikes => _admirerLikes;
+
 
 	/// <exception cref="ArgumentNullException"></exception>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
@@ -111,5 +125,53 @@ public class Profile : Entity
 	public string GetFullCaption()
 	{
 		return $"{Name}, {Age}, {City} - {Description}";
+	}
+
+	/// <exception cref="ArgumentNullException"></exception>
+	public Result AddAdmirerLike(Like like)
+	{
+		ArgumentNullException.ThrowIfNull(like, nameof(like));
+
+		if (_admirerLikes.Contains(like))
+			return Result.Failure($"Попытка добавления дубликата лайка к профилю '{OwnerId}'.");
+
+		_admirerLikes.Add(like);
+		return Result.Success();
+	}
+
+	/// <exception cref="ArgumentNullException"></exception>
+	public Result RemoveAdmirerLike(Like like)
+	{
+		ArgumentNullException.ThrowIfNull(like, nameof(like));
+
+		if (_admirerLikes.Contains(like) == false)
+			return Result.Failure("Попытка удаления несуществующего лайка.");
+
+		_admirerLikes.Remove(like);
+		return Result.Success();
+	}
+
+	/// <exception cref="ArgumentNullException"></exception>
+	public Result AddReciprocity(Reciprocity reciprocity)
+	{
+		ArgumentNullException.ThrowIfNull(reciprocity, nameof(reciprocity));
+
+		if (_reciprocities.Contains(reciprocity))
+			return Result.Failure("Попытка дублирования взаимной симпатии.");
+
+		_reciprocities.Add(reciprocity);
+		return Result.Success();
+	}
+
+	/// <exception cref="ArgumentNullException"></exception>
+	public Result RemoveReciprocity(Reciprocity reciprocity)
+	{
+		ArgumentNullException.ThrowIfNull(reciprocity, nameof(reciprocity));
+
+		if (_reciprocities.Contains(reciprocity) == false)
+			return Result.Failure("Попытка удаления несуществующей взаимной симпатии.");
+
+		_reciprocities.Remove(reciprocity);
+		return Result.Success();
 	}
 }

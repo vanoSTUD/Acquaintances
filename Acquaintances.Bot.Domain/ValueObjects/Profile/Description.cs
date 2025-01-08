@@ -5,7 +5,8 @@ namespace Acquaintances.Bot.Domain.ValueObjects.Profile;
 
 public class Description : ValueObject
 {
-	public const int DescriptionLength = 900;
+	public const int MaxLength = 900;
+	public const int MinLength = 0;
 
 	public string Value { get; private set; }
 
@@ -20,8 +21,8 @@ public class Description : ValueObject
 		if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
 			value = "";
 
-		if (value.Trim().Length > DescriptionLength)
-			return Result.Failure<Description>($"Описание не может быть больше {DescriptionLength} символов");
+		if (value.Trim().Length > MaxLength)
+			return Result.Failure<Description>($"Описание не может быть больше {MaxLength} символов.");
 
 		return new Description(value);
 	}
