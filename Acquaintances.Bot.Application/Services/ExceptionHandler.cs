@@ -5,7 +5,7 @@ public class ExceptionHandler
 {
 	public async Task HandleAsync(Exception exception, CancellationToken ct = default)
 	{
-        Console.WriteLine(exception);
+		Console.WriteLine(exception);
 
 		await Task.CompletedTask;
 	}

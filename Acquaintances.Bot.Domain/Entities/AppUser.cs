@@ -8,9 +8,9 @@ namespace Acquaintances.Bot.Domain.Entities;
 /// </summary>
 public class AppUser
 {
-    private AppUser(long chatId)
-    {
-        ChatId = chatId;
+	private AppUser(long chatId)
+	{
+		ChatId = chatId;
 	}
 
 	// Для EF Core

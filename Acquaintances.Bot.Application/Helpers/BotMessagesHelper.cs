@@ -31,7 +31,7 @@ public static class BotMessagesHelper
 		var photoGroup = photoIds.Select(p => new InputMediaPhoto(p)).ToList();
 		photoGroup.First().Caption = profile.GetFullCaption();
 
-		await bot.SendMessageHtml(chatId, "Вот твой профиль:");
+		await bot.SendMessageHtml(chatId, "Вот твоя анкета:");
 		await bot.SendMediaGroup(chatId, photoGroup);
 	}
 }

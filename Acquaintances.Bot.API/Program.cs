@@ -1,11 +1,9 @@
 using Acquaintances.Bot.API.Endpoints;
 using Acquaintances.Bot.API.Options;
 using Acquaintances.Bot.Application;
-using Acquaintances.Bot.Application.Extensions;
 using Acquaintances.Bot.DAL;
 using Microsoft.AspNetCore.Http.Json;
 using Telegram.Bot;
-using Telegram.Bot.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

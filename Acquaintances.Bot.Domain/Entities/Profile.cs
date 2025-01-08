@@ -117,7 +117,7 @@ public class Profile : Entity
 		return new Profile(ownerId, name, description, city, age, gender, preferredGender, photos);
 	}
 
-	public void SetActive(bool active) 
+	public void SetActive(bool active)
 	{
 		Active = active;
 	}

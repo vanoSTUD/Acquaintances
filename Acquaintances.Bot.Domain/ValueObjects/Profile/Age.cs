@@ -20,10 +20,10 @@ public class Age : ValueObject
 	{
 		if (value == null || !int.TryParse(value, out int age))
 			return Result.Failure<Age>("Некорректный формат возраста.");
-		
+
 		if (age > MaxAge)
 			return Result.Failure<Age>($"Возраст не может быть больше {MaxAge} лет.");
-		
+
 		if (age < MinAge)
 			return Result.Failure<Age>($"Возраст не может быть меньше {MinAge} лет.");
 

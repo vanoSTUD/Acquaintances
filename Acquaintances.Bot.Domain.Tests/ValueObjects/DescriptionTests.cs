@@ -5,7 +5,7 @@ namespace Acquaintances.Bot.Domain.Tests.ValueObjects;
 
 public class DescriptionTests
 {
-    [Fact]
+	[Fact]
 	public void Equals_EqualsObjects_ShouldReturnTrue()
 	{
 		// Arrange

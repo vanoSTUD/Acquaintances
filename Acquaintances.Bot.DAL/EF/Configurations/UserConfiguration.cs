@@ -28,8 +28,8 @@ public class UserConfiguration : IEntityTypeConfiguration<AppUser>
 
 		builder.Property(u => u.TempProfile)
 			.HasConversion(
-				profileJson => JsonSerializer.Serialize(profileJson, (JsonSerializerOptions?) null),
-				profile => JsonSerializer.Deserialize<TempProfile>(profile, (JsonSerializerOptions?) null)
+				profileJson => JsonSerializer.Serialize(profileJson, (JsonSerializerOptions?)null),
+				profile => JsonSerializer.Deserialize<TempProfile>(profile, (JsonSerializerOptions?)null)
 			);
 	}
 }

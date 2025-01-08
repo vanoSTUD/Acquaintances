@@ -1,7 +1,7 @@
-﻿using Acquaintances.Bot.Domain.Models;
-using Acquaintances.Bot.Domain.Entities;
-using CSharpFunctionalExtensions;
+﻿using Acquaintances.Bot.Domain.Entities;
 using Acquaintances.Bot.Domain.Enums;
+using Acquaintances.Bot.Domain.Models;
+using CSharpFunctionalExtensions;
 
 namespace Acquaintances.Bot.Application.Services.EntityServices
 {

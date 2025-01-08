@@ -7,7 +7,7 @@ namespace Acquaintances.Bot.Application.Services;
 
 public class UpdateHandler : IHandler<Update>
 {
-    private readonly ITelegramBotClient _bot;
+	private readonly ITelegramBotClient _bot;
 	private readonly IHandler<Message> _messageHandler;
 	private readonly IHandler<CallbackQuery> _callbackQueryHandler;
 
@@ -19,7 +19,7 @@ public class UpdateHandler : IHandler<Update>
 	}
 
 	public async Task HandleAsync(Update update, CancellationToken ct = default)
-    {
+	{
 		if (update == null)
 			return;
 
@@ -29,5 +29,5 @@ public class UpdateHandler : IHandler<Update>
 			UpdateType.CallbackQuery => _callbackQueryHandler.HandleAsync(update, ct),
 			_ => Task.CompletedTask
 		});
-    }
+	}
 }

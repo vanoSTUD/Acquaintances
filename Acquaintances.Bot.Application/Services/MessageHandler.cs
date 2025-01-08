@@ -3,7 +3,6 @@ using Acquaintances.Bot.Application.Helpers;
 using Acquaintances.Bot.Application.Services.CommandsHandlers;
 using Acquaintances.Bot.Application.Services.EntityServices;
 using Acquaintances.Bot.Application.Services.UserStateHandlers;
-using Acquaintances.Bot.Domain.Entities;
 using Acquaintances.Bot.Domain.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;

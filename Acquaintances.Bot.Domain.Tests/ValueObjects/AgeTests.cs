@@ -1,10 +1,9 @@
 using Acquaintances.Bot.Domain.ValueObjects.Profile;
-using Xunit;
 
 namespace Acquaintances.Bot.Domain.Tests.ValueObjects
 {
-    public class AgeTests
-    {
+	public class AgeTests
+	{
 		[Fact]
 		public void Equals_EqualsObjects_ShouldReturnTrue()
 		{
@@ -23,8 +22,8 @@ namespace Acquaintances.Bot.Domain.Tests.ValueObjects
 		}
 
 		[Fact]
-        public void Equals_DifferentObjects_ShouldReturnFalse()
-        {
+		public void Equals_DifferentObjects_ShouldReturnFalse()
+		{
 			// Arrange
 			var ageValue1 = Age.MaxAge - Age.MinAge;
 			var ageValue2 = Age.MaxAge - Age.MinAge - 1;

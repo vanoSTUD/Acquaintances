@@ -22,7 +22,7 @@ public class UserService : IUserService
 	{
 		var foundUser = await _userRepository.GetAsync(chatId, ct);
 
-		if (foundUser != null) 
+		if (foundUser != null)
 			return foundUser;
 
 		return await _userRepository.CreateAsync(AppUser.Create(chatId), ct);

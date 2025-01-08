@@ -1,11 +1,11 @@
-﻿using Acquaintances.Bot.Application.Helpers;
+﻿using Acquaintances.Bot.Application.Extensions;
+using Acquaintances.Bot.Application.Helpers;
+using Acquaintances.Bot.Application.Services.EntityServices;
 using Acquaintances.Bot.Domain.Enums;
 using Acquaintances.Bot.Domain.ValueObjects.Profile;
 using Microsoft.Extensions.DependencyInjection;
-using Telegram.Bot.Types;
 using Telegram.Bot;
-using Acquaintances.Bot.Application.Extensions;
-using Acquaintances.Bot.Application.Services.EntityServices;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Acquaintances.Bot.Application.Services.UserStateHandlers;

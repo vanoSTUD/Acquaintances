@@ -18,12 +18,12 @@ public class Like : Entity
 	}
 
 	// Для EF Core
-    private Like() {}
+	private Like() { }
 
 	/// <summary>
 	/// Id профиля - получателя лайка
 	/// </summary>
-    public long RecipientId { get; private set; }
+	public long RecipientId { get; private set; }
 
 	/// <summary>
 	/// Id профиля - отправителя лайка
@@ -33,7 +33,7 @@ public class Like : Entity
 	/// <summary>
 	/// Сообщение от отправителя лайка
 	/// </summary>
-	public string? Message { get; private set; } 
+	public string? Message { get; private set; }
 
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>

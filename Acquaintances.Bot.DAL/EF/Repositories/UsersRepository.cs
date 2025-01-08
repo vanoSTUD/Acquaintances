@@ -35,8 +35,8 @@ public class UsersRepository : IRepository<AppUser>
 		return await GetUserAsync(id, ct);
 	}
 
-	public async Task RemoveAsync(AppUser entity, CancellationToken ct) 
-	{ 
+	public async Task RemoveAsync(AppUser entity, CancellationToken ct)
+	{
 		if (_db.Users.Find(entity.ChatId) == null)
 			return;
 

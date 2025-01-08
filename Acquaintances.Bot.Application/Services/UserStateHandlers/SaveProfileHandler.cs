@@ -1,10 +1,10 @@
-﻿using Acquaintances.Bot.Application.Helpers;
+﻿using Acquaintances.Bot.Application.Extensions;
+using Acquaintances.Bot.Application.Helpers;
+using Acquaintances.Bot.Application.Services.EntityServices;
 using Acquaintances.Bot.Domain.Enums;
 using Microsoft.Extensions.DependencyInjection;
-using Telegram.Bot.Types;
 using Telegram.Bot;
-using Acquaintances.Bot.Application.Extensions;
-using Acquaintances.Bot.Application.Services.EntityServices;
+using Telegram.Bot.Types;
 
 namespace Acquaintances.Bot.Application.Services.UserStateHandlers;
 
@@ -34,7 +34,7 @@ public class SaveProfileHandler : StateHandlerBase
 		var user = await userService.GetOrCreateAsync(chatId, ct);
 
 		await userService.SetStateAsync(user, State.None, ct);
-		
+
 		var tempProfile = user.TempProfile;
 
 		if (tempProfile == null)

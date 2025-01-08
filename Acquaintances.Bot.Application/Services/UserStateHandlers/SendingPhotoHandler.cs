@@ -1,12 +1,12 @@
-﻿using Acquaintances.Bot.Application.Helpers;
+﻿using Acquaintances.Bot.Application.Extensions;
+using Acquaintances.Bot.Application.Helpers;
+using Acquaintances.Bot.Application.Services.EntityServices;
 using Acquaintances.Bot.Domain.Entities;
 using Acquaintances.Bot.Domain.Enums;
 using Microsoft.Extensions.DependencyInjection;
-using Telegram.Bot.Types;
 using Telegram.Bot;
-using Acquaintances.Bot.Application.Extensions;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
-using Acquaintances.Bot.Application.Services.EntityServices;
 
 namespace Acquaintances.Bot.Application.Services.UserStateHandlers;
 
@@ -78,7 +78,7 @@ public class SendingPhotoHandler : StateHandlerBase
 			return;
 		}
 
-		var keyboard = new InlineKeyboardMarkup().AddButton("Оставить", CallbackQueryData.SaveProfile); 
+		var keyboard = new InlineKeyboardMarkup().AddButton("Оставить", CallbackQueryData.SaveProfile);
 		var responceMessage = $"Загружено ({photoCount}/{Profile.MaxPhotos}) \nТы можешь добавить еще {Profile.MaxPhotos - photoCount} или оставить {(photoCount > 1 ? "эти" : "эту")}.";
 		await _bot.SendMessageHtml(chatId, responceMessage, keyboard, cancellationToken: ct);
 	}

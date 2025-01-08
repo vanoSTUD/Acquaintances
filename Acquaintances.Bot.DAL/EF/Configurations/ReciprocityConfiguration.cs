@@ -17,7 +17,7 @@ public class ReciprocityConfiguration : IEntityTypeConfiguration<Reciprocity>
 		builder.HasOne<Profile>()
 			.WithMany(p => p.Reciprocities)
 			.HasForeignKey(p => p.RecipientId)
-			.OnDelete(DeleteBehavior.Cascade); 
+			.OnDelete(DeleteBehavior.Cascade);
 
 		builder.Property(r => r.AdmirerId).IsRequired();
 	}
