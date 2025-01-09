@@ -28,7 +28,7 @@ public class Reciprocity : Entity
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	/// <exception cref="InvalidOperationException"></exception>
-	public static Reciprocity Create(long recipientId, long admirerId)
+	public static Result<Reciprocity> Create(long recipientId, long admirerId)
 	{
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(recipientId);
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(admirerId);

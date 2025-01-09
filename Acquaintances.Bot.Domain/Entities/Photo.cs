@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 
 namespace Acquaintances.Bot.Domain.Entities;
@@ -34,12 +35,14 @@ public class Photo : Entity
 	public string FileId { get; private set; } = null!;
 
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
-	/// <exception cref="ArgumentException"></exception>
-	public static Result<Photo> Create(string sourceId, long profileId)
+	/// <exception cref="ArgumentNullException"></exception>
+	public static Result<Photo> Create(string fileId, long profileId)
 	{
-		ArgumentException.ThrowIfNullOrEmpty(sourceId, nameof(sourceId));
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(profileId, nameof(profileId));
 
-		return new Photo(sourceId, profileId);
+		if (string.IsNullOrEmpty(fileId) || fileId.Trim().Length == 0)
+			return Result.Failure<Photo>("Не удалось добавить фотографию.");
+
+		return new Photo(fileId, profileId);
 	}
 }

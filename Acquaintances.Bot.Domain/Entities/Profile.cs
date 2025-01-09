@@ -133,7 +133,7 @@ public class Profile : Entity
 		ArgumentNullException.ThrowIfNull(like, nameof(like));
 
 		if (_admirerLikes.Contains(like))
-			return Result.Failure($"Попытка добавления дубликата лайка к профилю '{OwnerId}'.");
+			return Result.Failure($"Анкета не актуальна.");
 
 		_admirerLikes.Add(like);
 		return Result.Success();
@@ -145,7 +145,7 @@ public class Profile : Entity
 		ArgumentNullException.ThrowIfNull(like, nameof(like));
 
 		if (_admirerLikes.Contains(like) == false)
-			return Result.Failure("Попытка удаления несуществующего лайка.");
+			return Result.Failure("Анкета не актуальна.");
 
 		_admirerLikes.Remove(like);
 		return Result.Success();
@@ -157,7 +157,7 @@ public class Profile : Entity
 		ArgumentNullException.ThrowIfNull(reciprocity, nameof(reciprocity));
 
 		if (_reciprocities.Contains(reciprocity))
-			return Result.Failure("Попытка дублирования взаимной симпатии.");
+			return Result.Failure("Анкета не актуальна.");
 
 		_reciprocities.Add(reciprocity);
 		return Result.Success();
@@ -169,7 +169,7 @@ public class Profile : Entity
 		ArgumentNullException.ThrowIfNull(reciprocity, nameof(reciprocity));
 
 		if (_reciprocities.Contains(reciprocity) == false)
-			return Result.Failure("Попытка удаления несуществующей взаимной симпатии.");
+			return Result.Failure("Анкета не актуальна.");
 
 		_reciprocities.Remove(reciprocity);
 		return Result.Success();
