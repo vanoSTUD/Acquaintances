@@ -36,6 +36,6 @@ public class CallbackQueryHandler : IHandler<CallbackQuery>
 			await _stateHandlers.First(x => x.CallbackData == data).Execute(update, ct);
 		}
 
-		await _bot.AnswerCallbackQuery(update.CallbackQuery.Id);
+		await _bot.AnswerCallbackQuery(update.CallbackQuery.Id, cancellationToken: ct);
 	}
 }

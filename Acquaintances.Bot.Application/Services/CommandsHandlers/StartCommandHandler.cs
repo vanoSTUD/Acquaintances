@@ -1,7 +1,6 @@
 ﻿using Acquaintances.Bot.Application.Extensions;
 using Acquaintances.Bot.Application.Helpers;
 using Acquaintances.Bot.Application.Services.EntityServices;
-using Acquaintances.Bot.Domain.Entities;
 using Acquaintances.Bot.Domain.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
@@ -13,31 +12,34 @@ namespace Acquaintances.Bot.Application.Services.CommandsHandlers;
 public class StartCommandHandler : CommandHandlerBase
 {
 	private readonly IServiceScopeFactory _scopeFactory;
+	private readonly ITelegramBotClient _bot;
 
-	public StartCommandHandler(IServiceScopeFactory scopeFactory)
+    public StartCommandHandler(IServiceScopeFactory scopeFactory, ITelegramBotClient bot)
+    {
+        _scopeFactory = scopeFactory;
+        _bot = bot;
+    }
+
+    public override string CommandName => CommandNames.Start;
+
+	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
-		_scopeFactory = scopeFactory;
-	}
-
-	public override string CommandName => CommandNames.Start;
-
-	public override async Task Execute(Update update, AppUser user, ITelegramBotClient bot, CancellationToken ct = default)
-	{
+		var chatId = update.GetChatId();
 		using var scope = _scopeFactory.CreateScope();
 		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+		var user = await userService.GetOrCreateAsync(chatId, ct);
 		await userService.SetStateAsync(user, State.None, ct);
 
-		var chatId = user.ChatId;
 		var keyboard = new InlineKeyboardMarkup();
 
 		if (user.Profile == null)
 		{
-			keyboard.AddButton(InlineKeyboardButton.WithCallbackData("Создать", CallbackQueryData.CreateProfile));
-			await bot.SendMessageHtml(chatId, "У тебя еще нет профиля, создадим?", keyboard, ct);
+			keyboard.AddButton("Создать", CallbackQueryData.CreateProfile);
+			await _bot.SendMessageHtml(chatId, "У тебя еще нет профиля, создадим?", keyboard, ct);
 			return;
 		}
 
-		await BotMessagesHelper.SendProfile(bot, chatId, user.Profile);
-		await BotMessagesHelper.SendProfileCommands(bot, chatId);
+		await BotMessagesHelper.SendProfile(_bot, chatId, user.Profile);
+		await BotMessagesHelper.SendProfileCommands(_bot, chatId);
 	}
 }

@@ -9,10 +9,10 @@ namespace Acquaintances.Bot.Application.Services.EntityServices;
 
 public class UserService : IUserService
 {
-	private readonly IRepository<AppUser> _userRepository;
+	private readonly IUsersRepository _userRepository;
 	private readonly IRepository<Profile> _profileRepository;
 
-	public UserService(IRepository<AppUser> userRepository, IRepository<Profile> profileRepository)
+	public UserService(IUsersRepository userRepository, IRepository<Profile> profileRepository)
 	{
 		_userRepository = userRepository;
 		_profileRepository = profileRepository;

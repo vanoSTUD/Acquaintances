@@ -38,7 +38,7 @@ public class MessageHandler : IHandler<Message>
 		if (update.Message.Text is { } messageText && messageText.StartsWith('/'))
 		{
 			string command = messageText;
-			await _commandHandlers.First(x => x.CommandName == command).Execute(update, user, _bot, ct);
+			await _commandHandlers.First(x => x.CommandName == command).Handle(update, ct);
 			return;
 		}
 
@@ -48,7 +48,7 @@ public class MessageHandler : IHandler<Message>
 		}
 		else
 		{
-			await _commandHandlers.First(x => x.CommandName == CommandNames.Start).Execute(update, user, _bot, ct);
+			await _commandHandlers.First(x => x.CommandName == CommandNames.Start).Handle(update, ct);
 		}
 	}
 }
