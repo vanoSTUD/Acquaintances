@@ -39,7 +39,7 @@ public class AppUserTests
 	{
 		// Arrange
 		var user = AppUser.Create(123);
-		var newState = State.CreatingProfile;
+		var newState = UserStates.CreatingProfile;
 
 		// Act
 		user.SetState(newState);

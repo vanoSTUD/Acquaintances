@@ -5,8 +5,8 @@ namespace Acquaintances.Bot.Application.Services.UserStateHandlers;
 
 public abstract class StateHandlerBase
 {
-	public abstract State State { get; }
+	public abstract UserStates State { get; }
 	public virtual string CallbackData { get; } = string.Empty;
 
-	public abstract Task Execute(Update update, CancellationToken ct = default);
+	public abstract Task Handle(Update update, CancellationToken ct = default);
 }

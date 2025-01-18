@@ -30,7 +30,7 @@ public class AppUser
 	/// <summary>
 	/// Состояние в котором прибывает пользователь, к примеру создание анкеты
 	/// </summary>
-	public State State { get; private set; } = State.None;
+	public UserStates State { get; private set; } = UserStates.None;
 
 	/// <summary>
 	/// Временные данные, например данные создания анкеты
@@ -56,7 +56,7 @@ public class AppUser
 		Profile = profile;
 	}
 
-	public void SetState(State state)
+	public void SetState(UserStates state)
 	{
 		State = state;
 	}

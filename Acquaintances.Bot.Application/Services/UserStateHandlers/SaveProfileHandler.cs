@@ -18,10 +18,10 @@ public class SaveProfileHandler : StateHandlerBase
 		_scopeFactory = scopeFactory;
 	}
 
-	public override State State => State.SaveProfile;
+	public override UserStates State => UserStates.SaveProfile;
 	public override string CallbackData => CallbackQueryData.SaveProfile;
 
-	public override async Task Execute(Update update, CancellationToken ct = default)
+	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
 		if (update.CallbackQuery is not { } query)
 		{
@@ -33,7 +33,7 @@ public class SaveProfileHandler : StateHandlerBase
 		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 		var user = await userService.GetOrCreateAsync(chatId, ct);
 
-		await userService.SetStateAsync(user, State.None, ct);
+		await userService.SetStateAsync(user, UserStates.None, ct);
 
 		var tempProfile = user.TempProfile;
 
@@ -51,8 +51,8 @@ public class SaveProfileHandler : StateHandlerBase
 		}
 		else
 		{
-			await BotMessagesHelper.SendProfile(_bot, chatId, user.Profile);
-			await BotMessagesHelper.SendProfileCommands(_bot, chatId);
+			await BotMessagesHelper.ShowProfile(_bot, chatId, user.Profile);
+			await BotMessagesHelper.ShowProfileCommands(_bot, chatId);
 		}
 	}
 }

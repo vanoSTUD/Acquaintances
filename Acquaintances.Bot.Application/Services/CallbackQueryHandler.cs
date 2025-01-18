@@ -33,7 +33,7 @@ public class CallbackQueryHandler : IHandler<CallbackQuery>
 
 		if (update.CallbackQuery.Data is { } data)
 		{
-			await _stateHandlers.First(x => x.CallbackData == data).Execute(update, ct);
+			await _stateHandlers.First(x => x.CallbackData == data).Handle(update, ct);
 		}
 
 		await _bot.AnswerCallbackQuery(update.CallbackQuery.Id, cancellationToken: ct);

@@ -19,9 +19,9 @@ public class EnteringAgeHandler : StateHandlerBase
 		_scopeFactory = scopeFactory;
 	}
 
-	public override State State => State.EnteringAge;
+	public override UserStates State => UserStates.EnteringAge;
 
-	public override async Task Execute(Update update, CancellationToken ct = default)
+	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
 		if (update.Message is not { } message)
 		{
@@ -46,7 +46,7 @@ public class EnteringAgeHandler : StateHandlerBase
 		if (tempProfile == null)
 		{
 			await _bot.SendMessageHtml(chatId, $"Ошибка! Попробуйте {CommandNames.Start}.", cancellationToken: ct);
-			await userService.SetStateAsync(user, State.None, ct);
+			await userService.SetStateAsync(user, UserStates.None, ct);
 			return;
 		}
 
@@ -55,7 +55,7 @@ public class EnteringAgeHandler : StateHandlerBase
 
 		await _bot.SendMessageHtml(chatId, responceMessage, cancellationToken: ct);
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, State.EnteringCity, ct);
+		await userService.SetStateAsync(user, UserStates.EnteringCity, ct);
 	}
 }
 

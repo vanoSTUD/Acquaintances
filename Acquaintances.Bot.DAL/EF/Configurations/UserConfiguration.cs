@@ -23,7 +23,7 @@ public class UserConfiguration : IEntityTypeConfiguration<AppUser>
 		builder.Property(u => u.State)
 			.HasConversion(
 				state => state.ToString(),  // Преобразование Enum -> String
-				state => (State)Enum.Parse(typeof(State), state) // Преобразование String -> Enum
+				state => (UserStates)Enum.Parse(typeof(UserStates), state) // Преобразование String -> Enum
 			);
 
 		builder.Property(u => u.TempProfile)

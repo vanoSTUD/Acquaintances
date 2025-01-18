@@ -42,9 +42,9 @@ public class MessageHandler : IHandler<Message>
 			return;
 		}
 
-		if (user.State != State.None)
+		if (user.State != UserStates.None)
 		{
-			await _stateHandlers.First(x => x.State == user.State).Execute(update, ct);
+			await _stateHandlers.First(x => x.State == user.State).Handle(update, ct);
 		}
 		else
 		{

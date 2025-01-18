@@ -20,27 +20,27 @@ public class SendingPhotoHandler : StateHandlerBase
 		_scopeFactory = scopeFactory;
 	}
 
-	public override State State => State.SendingPhotos;
+	public override UserStates State => UserStates.SendingPhotos;
 
-	public override async Task Execute(Update update, CancellationToken ct = default)
+	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
 		if (update.Message is not { } message)
 		{
 			return;
 		}
-		if (message.Photo is not { } inputPhotos)
+		if (message.Photo is not { } inputPhotoSizes)
 		{
 			await _bot.SendMessageHtml(update.Message.Chat, "Твоя цель - просто загрузить фотографию.", cancellationToken: ct);
 			return;
 		}
 
 		var chatId = update.GetChatId();
-		var inputPhoto = inputPhotos.Last();
+		var inputPhoto = inputPhotoSizes.Last();
 		var photoResult = Photo.Create(inputPhoto.FileId, chatId);
 
 		if (photoResult.IsFailure)
 		{
-			await _bot.SendMessageHtml(update.Message.Chat, photoResult.Error, cancellationToken: ct);
+			await _bot.SendMessageHtml(chatId, photoResult.Error, cancellationToken: ct);
 			return;
 		}
 
@@ -65,7 +65,7 @@ public class SendingPhotoHandler : StateHandlerBase
 		if (photoCount >= Profile.MaxPhotos)
 		{
 			var result = await userService.AddProfileAsync(user, tempProfile);
-			await userService.SetStateAsync(user, State.None, ct);
+			await userService.SetStateAsync(user, UserStates.None, ct);
 
 			if (result.IsFailure)
 			{
@@ -73,8 +73,8 @@ public class SendingPhotoHandler : StateHandlerBase
 				return;
 			}
 
-			await BotMessagesHelper.SendProfile(_bot, chatId, user.Profile);
-			await BotMessagesHelper.SendProfileCommands(_bot, chatId);
+			await BotMessagesHelper.ShowProfile(_bot, chatId, user.Profile);
+			await BotMessagesHelper.ShowProfileCommands(_bot, chatId);
 			return;
 		}
 

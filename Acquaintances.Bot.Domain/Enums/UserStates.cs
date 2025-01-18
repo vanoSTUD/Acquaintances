@@ -1,6 +1,6 @@
 ﻿namespace Acquaintances.Bot.Domain.Enums;
 
-public enum State
+public enum UserStates
 {
 	None,
 	// Создание/Пересоздание анкеты
@@ -14,6 +14,8 @@ public enum State
 	SendingPhotos,
 	SaveProfile,
 
+	ChangingDescription,
+	ChangingPhotos,
 	//Чужие профили
 	ViewingProfiles,
 	CreatingLikeMessage,

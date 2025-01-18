@@ -13,7 +13,7 @@ public static class UpdateExtendion
 			{ MessageReactionCount.Chat.Id: var id } => id,
 			{ MessageReaction.Chat.Id: var id } => id,
 			{ EditedMessage.Chat.Id: var id } => id,
-			_ => throw new Exception("Не удалось получить id чата")
+			_ => throw new Exception($"Не удалось получить id чата: {@update}")
 		};
 	}
 }

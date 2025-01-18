@@ -20,9 +20,9 @@ public class EnteringGenderHandler : StateHandlerBase
 		_scopeFactory = scopeFactory;
 	}
 
-	public override State State => State.EnteringGender;
+	public override UserStates State => UserStates.EnteringGender;
 
-	public override async Task Execute(Update update, CancellationToken ct = default)
+	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
 		if (update.Message is not { } message)
 		{
@@ -53,7 +53,7 @@ public class EnteringGenderHandler : StateHandlerBase
 		if (tempProfile == null)
 		{
 			await _bot.SendMessageHtml(chatId, $"Ошибка! Попробуйте {CommandNames.Start}.", cancellationToken: ct);
-			await userService.SetStateAsync(user, State.None, ct);
+			await userService.SetStateAsync(user, UserStates.None, ct);
 			return;
 		}
 
@@ -69,7 +69,7 @@ public class EnteringGenderHandler : StateHandlerBase
 
 		tempProfile.Gender = genderResult.Value;
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, State.EnteringPrefferedGender, ct);
+		await userService.SetStateAsync(user, UserStates.EnteringPrefferedGender, ct);
 	}
 }
 

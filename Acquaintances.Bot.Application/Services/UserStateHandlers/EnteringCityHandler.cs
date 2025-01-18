@@ -20,9 +20,9 @@ public class EnteringCityHandler : StateHandlerBase
 		_scopeFactory = scopeFactory;
 	}
 
-	public override State State => State.EnteringCity;
+	public override UserStates State => UserStates.EnteringCity;
 
-	public override async Task Execute(Update update, CancellationToken ct = default)
+	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
 		if (update.Message is not { } message)
 		{
@@ -63,7 +63,7 @@ public class EnteringCityHandler : StateHandlerBase
 
 		tempProfile.City = cityResult.Value;
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, State.EnteringGender, ct);
+		await userService.SetStateAsync(user, UserStates.EnteringGender, ct);
 	}
 }
 

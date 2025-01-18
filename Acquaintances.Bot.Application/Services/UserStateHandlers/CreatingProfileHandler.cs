@@ -18,10 +18,10 @@ public class CreatingProfileHandler : StateHandlerBase
 		_scopeFactory = scopeFactory;
 	}
 
-	public override State State => State.CreatingProfile;
+	public override UserStates State => UserStates.CreatingProfile;
 	public override string CallbackData => CallbackQueryData.CreateProfile;
 
-	public override async Task Execute(Update update, CancellationToken ct = default)
+	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
 		var chatId = update.GetChatId();
 
@@ -31,6 +31,6 @@ public class CreatingProfileHandler : StateHandlerBase
 
 		await _bot.SendMessageHtml(chatId, "Создание анкеты. \nВведи своё имя:", cancellationToken: ct);
 
-		await userService.SetStateAsync(user, State.EnteringName, ct);
+		await userService.SetStateAsync(user, UserStates.EnteringName, ct);
 	}
 }

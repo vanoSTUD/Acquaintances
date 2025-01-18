@@ -7,13 +7,11 @@ namespace Acquaintances.Bot.Application.Services;
 
 public class UpdateHandler : IHandler<Update>
 {
-	private readonly ITelegramBotClient _bot;
 	private readonly IHandler<Message> _messageHandler;
 	private readonly IHandler<CallbackQuery> _callbackQueryHandler;
 
-	public UpdateHandler(ITelegramBotClient bot, IHandler<Message> messageHandler, IHandler<CallbackQuery> callbackQueryHandler)
+	public UpdateHandler(IHandler<Message> messageHandler, IHandler<CallbackQuery> callbackQueryHandler)
 	{
-		_bot = bot;
 		_messageHandler = messageHandler;
 		_callbackQueryHandler = callbackQueryHandler;
 	}

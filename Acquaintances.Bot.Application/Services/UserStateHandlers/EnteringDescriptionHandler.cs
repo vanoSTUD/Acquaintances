@@ -20,9 +20,9 @@ public class EnteringDescriptionHandler : StateHandlerBase
 		_scopeFactory = scopeFactory;
 	}
 
-	public override State State => State.EnteringDescription;
+	public override UserStates State => UserStates.EnteringDescription;
 
-	public override async Task Execute(Update update, CancellationToken ct = default)
+	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
 		if (update.Message is not { } message)
 			return;
@@ -40,6 +40,21 @@ public class EnteringDescriptionHandler : StateHandlerBase
 		using var scope = _scopeFactory.CreateScope();
 		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 		var user = await userService.GetOrCreateAsync(chatId, ct);
+
+		if (user.Profile != null)
+		{
+			user.Profile.SetDescription(descriptionResult.Value);
+			await BotMessagesHelper.ShowProfile(_bot, chatId, user.Profile);
+			await BotMessagesHelper.ShowProfileCommands(_bot, chatId);
+
+			//todo: сделать изменение описания анкеты
+
+
+            await userService.SetStateAsync(user, UserStates.None, ct);
+			await userService.UpdateAsync(user, ct);
+            return;
+        }
+
 		var tempProfile = user.TempProfile;
 
 		if (tempProfile == null)
@@ -54,7 +69,7 @@ public class EnteringDescriptionHandler : StateHandlerBase
 		tempProfile.Description = descriptionResult.Value;
 
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, State.SendingPhotos, ct);
+		await userService.SetStateAsync(user, UserStates.SendingPhotos, ct);
 	}
 }
 

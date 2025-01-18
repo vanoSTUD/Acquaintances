@@ -73,7 +73,7 @@ public class Profile : Entity
 	public bool Active { get; private set; }
 
 	/// <summary>
-	/// Фотографии профиля
+	/// Фотографии анкеты
 	/// </summary>
 	public IReadOnlyList<Photo> Photos => _photos;
 
@@ -83,7 +83,7 @@ public class Profile : Entity
 	public IReadOnlyList<Reciprocity> Reciprocities => _reciprocities;
 
 	/// <summary>
-	/// Полученные лайки от других пользователей
+	/// Полученные лайки от других профилей пользователей
 	/// </summary>
 	public IReadOnlyList<Like> AdmirerLikes => _admirerLikes;
 
@@ -125,6 +125,11 @@ public class Profile : Entity
 	public string GetFullCaption()
 	{
 		return $"{Name}, {Age}, {City} - {Description}";
+	}
+
+	public void SetDescription(Description newDescription)
+	{
+		Description = newDescription;
 	}
 
 	/// <exception cref="ArgumentNullException"></exception>

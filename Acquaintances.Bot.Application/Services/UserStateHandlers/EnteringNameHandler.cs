@@ -19,9 +19,9 @@ public class EnteringNameHandler : StateHandlerBase
 		_scopeFactory = scopeFactory;
 	}
 
-	public override State State => State.EnteringName;
+	public override UserStates State => UserStates.EnteringName;
 
-	public override async Task Execute(Update update, CancellationToken ct = default)
+	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
 		if (update.Message is not { } message)
 		{
@@ -46,7 +46,7 @@ public class EnteringNameHandler : StateHandlerBase
 
 		var tempProfile = new TempProfile() { Name = nameResult.Value };
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, State.EnteringAge, ct);
+		await userService.SetStateAsync(user, UserStates.EnteringAge, ct);
 	}
 }
 

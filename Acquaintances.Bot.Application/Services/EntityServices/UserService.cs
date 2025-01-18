@@ -72,7 +72,7 @@ public class UserService : IUserService
 		await _userRepository.UpdateAsync(user, ct);
 	}
 
-	public async Task SetStateAsync(AppUser user, State state, CancellationToken ct = default)
+	public async Task SetStateAsync(AppUser user, UserStates state, CancellationToken ct = default)
 	{
 		user.SetState(state);
 		await _userRepository.UpdateAsync(user, ct);

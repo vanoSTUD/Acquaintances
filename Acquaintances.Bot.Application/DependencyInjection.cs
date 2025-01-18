@@ -26,6 +26,7 @@ public static class DependencyInjection
 		services.AddSingleton<StateHandlerBase, EnteringPreferedGenderHandler>();
 		services.AddSingleton<StateHandlerBase, SaveProfileHandler>();
 		services.AddSingleton<StateHandlerBase, SendingPhotoHandler>();
+		services.AddSingleton<StateHandlerBase, ChangingDescriptionHandler>();
 
 		services.AddSingleton<CommandHandlerBase, StartCommandHandler>();
 
