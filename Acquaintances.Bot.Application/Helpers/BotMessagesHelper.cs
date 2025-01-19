@@ -8,12 +8,18 @@ namespace Acquaintances.Bot.Application.Helpers;
 
 public static class BotMessagesHelper
 {
-	public static async Task ShowProfileCommands(ITelegramBotClient bot, long chatId)
+	public static async Task ShowProfileAsync(ITelegramBotClient bot, long chatId, Profile? profile, CancellationToken ct = default)
+	{
+		await ShowProfile(bot, chatId, profile, ct);
+		await ShowProfileCommands(bot, chatId, ct);
+	}
+
+	private static async Task ShowProfileCommands(ITelegramBotClient bot, long chatId, CancellationToken ct = default)
 	{
 		var commands = """
 			1 - Смотреть анкеты
 			2 - Заполнить анкету заново
-			3 - Изменить текст анкеты
+			3 - Изменить описание анкеты
 			4 - Изменить фото/видео анкеты
 			""";
 		var keyboard = new InlineKeyboardMarkup()
@@ -22,10 +28,10 @@ public static class BotMessagesHelper
 			.AddButton("3", CallbackQueryData.ChangingDescription)
 			.AddButton("4");
 
-		await bot.SendMessageHtml(chatId, commands, keyboard);
+		await bot.SendMessageHtml(chatId, commands, keyboard, cancellationToken: ct);
 	}
 
-	public static async Task ShowProfile(ITelegramBotClient bot, long chatId, Profile? profile)
+	private static async Task ShowProfile(ITelegramBotClient bot, long chatId, Profile? profile, CancellationToken ct = default)
 	{
 		if (profile == null)
 			return;
@@ -34,7 +40,7 @@ public static class BotMessagesHelper
 		var photoGroup = photoIds.Select(p => new InputMediaPhoto(p)).ToList();
 		photoGroup.First().Caption = profile.GetFullCaption();
 
-		await bot.SendMessageHtml(chatId, "Вот твоя анкета:");
-		await bot.SendMediaGroup(chatId, photoGroup);
+		await bot.SendMessageHtml(chatId, "Твоя анкета:", cancellationToken: ct);
+		await bot.SendMediaGroup(chatId, photoGroup, cancellationToken: ct);
 	}
 }

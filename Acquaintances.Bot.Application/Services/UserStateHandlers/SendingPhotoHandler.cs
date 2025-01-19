@@ -73,8 +73,7 @@ public class SendingPhotoHandler : StateHandlerBase
 				return;
 			}
 
-			await BotMessagesHelper.ShowProfile(_bot, chatId, user.Profile);
-			await BotMessagesHelper.ShowProfileCommands(_bot, chatId);
+			await BotMessagesHelper.ShowProfileAsync(_bot, chatId, user.Profile, ct);
 			return;
 		}
 

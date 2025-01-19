@@ -44,13 +44,9 @@ public class EnteringDescriptionHandler : StateHandlerBase
 		if (user.Profile != null)
 		{
 			user.Profile.SetDescription(descriptionResult.Value);
-			await BotMessagesHelper.ShowProfile(_bot, chatId, user.Profile);
-			await BotMessagesHelper.ShowProfileCommands(_bot, chatId);
+			await BotMessagesHelper.ShowProfileAsync(_bot, chatId, user.Profile, ct);
 
-			//todo: сделать изменение описания анкеты
-
-
-            await userService.SetStateAsync(user, UserStates.None, ct);
+			await userService.SetStateAsync(user, UserStates.None, ct);
 			await userService.UpdateAsync(user, ct);
             return;
         }

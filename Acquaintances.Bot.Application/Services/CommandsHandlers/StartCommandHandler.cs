@@ -39,7 +39,6 @@ public class StartCommandHandler : CommandHandlerBase
 			return;
 		}
 
-		await BotMessagesHelper.ShowProfile(_bot, chatId, user.Profile);
-		await BotMessagesHelper.ShowProfileCommands(_bot, chatId);
+		await BotMessagesHelper.ShowProfileAsync(_bot, chatId, user.Profile, ct);
 	}
 }

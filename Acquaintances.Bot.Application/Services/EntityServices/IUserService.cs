@@ -7,7 +7,7 @@ namespace Acquaintances.Bot.Application.Services.EntityServices
 {
 	public interface IUserService
 	{
-		Task<Result> AddProfileAsync(AppUser user, TempProfile profile);
+		Task<Result> AddProfileAsync(AppUser user, TempProfile profile, CancellationToken ct = default);
 		Task<AppUser> GetOrCreateAsync(long chatId, CancellationToken ct = default);
 		Task UpdateAsync(AppUser user, CancellationToken ct = default);
 		Task SetStateAsync(AppUser user, UserStates state, CancellationToken ct = default);

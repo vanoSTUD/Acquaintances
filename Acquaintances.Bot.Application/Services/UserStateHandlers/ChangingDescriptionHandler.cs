@@ -5,9 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot.Types;
 using Telegram.Bot;
 using Acquaintances.Bot.Application.Extensions;
+using Acquaintances.Bot.Domain.ValueObjects.Profile;
 
 namespace Acquaintances.Bot.Application.Services.UserStateHandlers;
 
+/// <summary>
+/// Обрабатывает сallbackQurey и само собщение для изменения описания анкеты
+/// </summary>
 public class ChangingDescriptionHandler : StateHandlerBase
 {
     private readonly ITelegramBotClient _bot;
@@ -18,34 +22,52 @@ public class ChangingDescriptionHandler : StateHandlerBase
         _scopeFactory = scopeFactory;
     }
 
-    public override UserStates State => UserStates.None;
+    public override UserStates State => UserStates.ChangingDescription;
     public override string CallbackData => CallbackQueryData.ChangingDescription;
 
-    public override async Task Handle(Update update, CancellationToken ct = default)
+	public override async Task Handle(Update update, CancellationToken ct = default)
     {
-        if (update.CallbackQuery is not { } query)
+        if (update.Message == null && update.CallbackQuery == null) 
         {
-            //Todo: обработка нештатной ситуации
-            return;
-        }
+			//Todo: обработка нештатной ситуации
+			return;
+		}
 
-        var chatId = update.GetChatId();
-        using var scope = _scopeFactory.CreateScope();
-        var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-        var user = await userService.GetOrCreateAsync(chatId, ct);
+		var chatId = update.GetChatId();
+		using var scope = _scopeFactory.CreateScope();
+		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+		var user = await userService.GetOrCreateAsync(chatId, ct);
 
-        if (user.Profile == null)
+		if (user.Profile == null)
+		{
+			await _bot.SendMessageHtml(chatId, $"Ошибка! У вас нет анкеты.", cancellationToken: ct);
+			await userService.SetStateAsync(user, UserStates.None, ct);
+			return;
+		}
+
+		if (update.CallbackQuery != null)
         {
-            await _bot.SendMessageHtml(chatId, $"Ошибка! У вас нет анкеты.", cancellationToken: ct);
-            await userService.SetStateAsync(user, UserStates.None, ct);
-            await userService.UpdateAsync(user, ct);
-            return;
-        }
+			var responceMessage = $"Введи новое описание анкеты:";
+			await _bot.SendMessageHtml(chatId, responceMessage, cancellationToken: ct);
 
-        var responceMessage = $"Введи новое описание анкеты:";
-        await _bot.SendMessageHtml(chatId, responceMessage, cancellationToken: ct);
+			await userService.SetStateAsync(user, UserStates.ChangingDescription, ct);
+			return;
+		}
+		if (update.Message != null)
+		{
+			var inputDescription = update.Message.Text;
+			var descriptionResult = Description.Create(inputDescription);
 
-        await userService.SetStateAsync(user, UserStates.EnteringDescription, ct);
-    }
+			if (descriptionResult.IsFailure)
+			{
+				await _bot.SendMessageHtml(chatId, descriptionResult.Error, cancellationToken: ct);
+				return;
+			}
+
+			user.Profile.SetDescription(descriptionResult.Value);
+			await userService.SetStateAsync(user, UserStates.None, ct);
+			await BotMessagesHelper.ShowProfileAsync(_bot, chatId, user.Profile, ct);
+		}
+	}
 }
 

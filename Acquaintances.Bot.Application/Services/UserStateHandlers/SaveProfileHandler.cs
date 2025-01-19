@@ -43,7 +43,7 @@ public class SaveProfileHandler : StateHandlerBase
 			return;
 		}
 
-		var result = await userService.AddProfileAsync(user, tempProfile);
+		var result = await userService.AddProfileAsync(user, tempProfile, ct);
 
 		if (result.IsFailure)
 		{
@@ -51,8 +51,7 @@ public class SaveProfileHandler : StateHandlerBase
 		}
 		else
 		{
-			await BotMessagesHelper.ShowProfile(_bot, chatId, user.Profile);
-			await BotMessagesHelper.ShowProfileCommands(_bot, chatId);
+			await BotMessagesHelper.ShowProfileAsync(_bot, chatId, user.Profile, ct);
 		}
 	}
 }

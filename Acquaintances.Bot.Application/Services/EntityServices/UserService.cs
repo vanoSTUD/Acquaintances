@@ -28,7 +28,7 @@ public class UserService : IUserService
 		return await _userRepository.CreateAsync(AppUser.Create(chatId), ct);
 	}
 
-	public async Task<Result> AddProfileAsync(AppUser user, TempProfile profile)
+	public async Task<Result> AddProfileAsync(AppUser user, TempProfile profile, CancellationToken ct = default)
 	{
 		try
 		{
@@ -48,15 +48,15 @@ public class UserService : IUserService
 				return Result.Failure($"Ошибка! {profileResult.Error}. \nПопробуй {CommandNames.Start}");
 			}
 
-			await _profileRepository.CreateAsync(profileResult.Value);
+			await _profileRepository.CreateAsync(profileResult.Value, ct);
 			var oldProfile = user.Profile;
 			user.SetProfile(profileResult.Value);
 
-			await _userRepository.UpdateAsync(user);
+			await _userRepository.UpdateAsync(user, ct);
 
 			if (oldProfile != null)
 			{
-				await _profileRepository.RemoveAsync(oldProfile);
+				await _profileRepository.RemoveAsync(oldProfile, ct);
 			}
 
 			return Result.Success();
