@@ -32,7 +32,7 @@ public static class BotEndpoints
 		}
 		catch (Exception ex)
 		{
-			await exceptionHandler.HandleAsync(ex, ct);
+			await exceptionHandler.HandleAsync(ex);
 		}
 
 		return Results.Ok();

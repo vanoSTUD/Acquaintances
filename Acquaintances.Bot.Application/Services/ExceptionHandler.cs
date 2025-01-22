@@ -12,7 +12,7 @@ public class ExceptionHandler
         _logger = logger;
     }
 
-    public async Task HandleAsync(Exception exception, CancellationToken ct = default)
+    public async Task HandleAsync(Exception exception)
 	{
         _logger.LogError("{Exception}", exception);
 

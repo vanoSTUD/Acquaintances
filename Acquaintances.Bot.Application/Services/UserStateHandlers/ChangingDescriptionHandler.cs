@@ -11,7 +11,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 namespace Acquaintances.Bot.Application.Services.UserStateHandlers;
 
 /// <summary>
-/// Обрабатывает сallbackQurey и само собщение для изменения описания анкеты
+/// Обрабатывает сallbackQuery и само собщение для изменения описания анкеты
 /// </summary>
 public class ChangingDescriptionHandler : StateHandlerBase
 {

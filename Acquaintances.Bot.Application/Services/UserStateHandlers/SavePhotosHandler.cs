@@ -1,25 +1,25 @@
-﻿using Acquaintances.Bot.Application.Extensions;
-using Acquaintances.Bot.Application.Helpers;
+﻿using Acquaintances.Bot.Application.Helpers;
 using Acquaintances.Bot.Application.Services.EntityServices;
 using Acquaintances.Bot.Domain.Enums;
 using Microsoft.Extensions.DependencyInjection;
-using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot;
+using Acquaintances.Bot.Application.Extensions;
 
 namespace Acquaintances.Bot.Application.Services.UserStateHandlers;
 
-public class SaveProfileHandler : StateHandlerBase
+public class SavePhotosHandler : StateHandlerBase
 {
 	private readonly ITelegramBotClient _bot;
 	private readonly IServiceScopeFactory _scopeFactory;
-	public SaveProfileHandler(ITelegramBotClient botClient, IServiceScopeFactory scopeFactory)
+	public SavePhotosHandler(ITelegramBotClient botClient, IServiceScopeFactory scopeFactory)
 	{
 		_bot = botClient;
 		_scopeFactory = scopeFactory;
 	}
 
-	public override UserStates State => UserStates.SaveProfile;
-	public override string CallbackData => CallbackQueryData.SaveProfile;
+	public override UserStates State => UserStates.SavePhotos;
+	public override string CallbackData => CallbackQueryData.SavePhotos;
 
 	public override async Task Handle(Update update, CancellationToken ct = default)
 	{
@@ -35,21 +35,21 @@ public class SaveProfileHandler : StateHandlerBase
 
 		await userService.SetStateAndUpdateAsync(user, UserStates.None, ct);
 
+		if (user.Profile == null)
+		{
+			await BotMessagesHelper.SendErrorMessageAsync(_bot, chatId, ct);
+			return;
+		}
+
 		var tempProfile = user.TempProfile;
 
-		if (tempProfile == null)
+		if (tempProfile == null || tempProfile.Photos == null || tempProfile.Photos.Count == 0)
 		{
-			await _bot.SendMessageHtml(chatId, $"Не нашел твои данные! Попробуй {CommandNames.Start}.", cancellationToken: ct);
+			await BotMessagesHelper.SendErrorMessageAsync(_bot, chatId, ct);
 			return;
 		}
 
-		var result = await userService.AddProfileAsync(user, tempProfile, ct);
-
-		if (result.IsFailure)
-		{
-			await _bot.SendMessageHtml(chatId, result.Error, cancellationToken: ct);
-			return;
-		}
+		user.Profile.SetPhotos(tempProfile.Photos);
 
 		await BotMessagesHelper.SendProfileAsync(_bot, chatId, user.Profile, ct);
 		await userService.ClearTempProfileAsync(user, ct);

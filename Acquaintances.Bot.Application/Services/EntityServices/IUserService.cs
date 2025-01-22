@@ -12,6 +12,6 @@ namespace Acquaintances.Bot.Application.Services.EntityServices
 		Task UpdateAsync(AppUser user, CancellationToken ct = default);
 		Task SetStateAndUpdateAsync(AppUser user, UserStates state, CancellationToken ct = default);
 		Task SetTempProfileAsync(AppUser user, TempProfile? profile, CancellationToken ct = default);
-		Task ClearTempProfile(AppUser user, CancellationToken ct = default);
+		Task ClearTempProfileAsync(AppUser user, CancellationToken ct = default);
 	}
 }

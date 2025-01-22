@@ -132,6 +132,12 @@ public class Profile : Entity
 		Description = newDescription;
 	}
 
+	public void SetPhotos(List<Photo> photos)
+	{
+		_photos.Clear();
+		_photos.AddRange(photos);
+	}
+
 	/// <exception cref="ArgumentNullException"></exception>
 	public Result AddAdmirerLike(Like like)
 	{

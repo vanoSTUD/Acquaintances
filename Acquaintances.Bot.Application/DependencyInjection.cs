@@ -24,10 +24,14 @@ public static class DependencyInjection
 		services.AddSingleton<StateHandlerBase, EnteringDescriptionHandler>();
 		services.AddSingleton<StateHandlerBase, EnteringGenderHandler>();
 		services.AddSingleton<StateHandlerBase, EnteringPreferedGenderHandler>();
-		services.AddSingleton<StateHandlerBase, SaveProfileHandler>();
 		services.AddSingleton<StateHandlerBase, SendingPhotoHandler>();
-		services.AddSingleton<StateHandlerBase, ChangingDescriptionHandler>();
+
+		services.AddSingleton<StateHandlerBase, SaveProfileHandler>();
+		services.AddSingleton<StateHandlerBase, SavePhotosHandler>();
 		services.AddSingleton<StateHandlerBase, ViewMyProfileHandler>();
+
+		services.AddSingleton<StateHandlerBase, ChangingDescriptionHandler>();
+		services.AddSingleton<StateHandlerBase, ChangingPhotosHandler>();
 
 		services.AddSingleton<CommandHandlerBase, StartCommandHandler>();
 

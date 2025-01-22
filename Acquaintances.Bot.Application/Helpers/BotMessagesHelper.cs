@@ -19,6 +19,11 @@ public static class BotMessagesHelper
 		await bot.SendMessageHtml(chatId, $"Ошибка! У тебя нет анкеты. Попробуй {CommandNames.Start}", cancellationToken: ct);
 	}
 
+	public static async Task SendErrorMessageAsync(ITelegramBotClient bot, long chatId, CancellationToken ct = default)
+	{
+		await bot.SendMessageHtml(chatId, $"Ошибка! Попробуй {CommandNames.Start}", cancellationToken: ct);
+	}
+
 	public static InlineKeyboardMarkup GetStopChangesKeyboard()
 	{
 		return new InlineKeyboardMarkup().AddButton("Не изменять", CallbackQueryData.ViewMyProfile);
@@ -41,7 +46,7 @@ public static class BotMessagesHelper
 			.AddButton("1")
 			.AddButton("2", CallbackQueryData.CreateProfile)
 			.AddButton("3", CallbackQueryData.ChangingDescription)
-			.AddButton("4");
+			.AddButton("4", CallbackQueryData.ChangingPhotos);
 
 		await bot.SendMessageHtml(chatId, commands, keyboard, cancellationToken: ct);
 	}

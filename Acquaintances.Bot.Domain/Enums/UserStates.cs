@@ -13,6 +13,7 @@ public enum UserStates
 	EnteringDescription,
 	SendingPhotos,
 	SaveProfile,
+	SavePhotos,
 
 
 	ViewMyProfile,

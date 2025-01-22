@@ -74,7 +74,7 @@ public class SendingPhotoHandler : StateHandlerBase
 			}
 
 			await BotMessagesHelper.SendProfileAsync(_bot, chatId, user.Profile, ct);
-			await userService.ClearTempProfile(user, ct);
+			await userService.ClearTempProfileAsync(user, ct);
 			return;
 		}
 

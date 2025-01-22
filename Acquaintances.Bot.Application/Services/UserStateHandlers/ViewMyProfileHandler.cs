@@ -5,13 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot.Types;
 using Telegram.Bot;
 using Acquaintances.Bot.Application.Extensions;
-using Acquaintances.Bot.Domain.ValueObjects.Profile;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Acquaintances.Bot.Application.Services.UserStateHandlers;
 
 /// <summary>
-/// Обрабатывает сallbackQurey и само собщение для изменения описания анкеты
+/// Обрабатывает сallbackQurey и само сообщение для изменения описания анкеты
 /// </summary>
 public class ViewMyProfileHandler : StateHandlerBase
 {
