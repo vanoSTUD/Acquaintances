@@ -46,7 +46,7 @@ public class EnteringAgeHandler : StateHandlerBase
 		if (tempProfile == null)
 		{
 			await _bot.SendMessageHtml(chatId, $"Ошибка! Попробуйте {CommandNames.Start}.", cancellationToken: ct);
-			await userService.SetStateAsync(user, UserStates.None, ct);
+			await userService.SetStateAndUpdateAsync(user, UserStates.None, ct);
 			return;
 		}
 
@@ -55,7 +55,7 @@ public class EnteringAgeHandler : StateHandlerBase
 
 		await _bot.SendMessageHtml(chatId, responceMessage, cancellationToken: ct);
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, UserStates.EnteringCity, ct);
+		await userService.SetStateAndUpdateAsync(user, UserStates.EnteringCity, ct);
 	}
 }
 

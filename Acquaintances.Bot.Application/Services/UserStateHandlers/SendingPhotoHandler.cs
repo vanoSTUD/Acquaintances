@@ -65,7 +65,7 @@ public class SendingPhotoHandler : StateHandlerBase
 		if (photoCount >= Profile.MaxPhotos)
 		{
 			var result = await userService.AddProfileAsync(user, tempProfile);
-			await userService.SetStateAsync(user, UserStates.None, ct);
+			await userService.SetStateAndUpdateAsync(user, UserStates.None, ct);
 
 			if (result.IsFailure)
 			{
@@ -73,7 +73,8 @@ public class SendingPhotoHandler : StateHandlerBase
 				return;
 			}
 
-			await BotMessagesHelper.ShowProfileAsync(_bot, chatId, user.Profile, ct);
+			await BotMessagesHelper.SendProfileAsync(_bot, chatId, user.Profile, ct);
+			await userService.ClearTempProfile(user, ct);
 			return;
 		}
 

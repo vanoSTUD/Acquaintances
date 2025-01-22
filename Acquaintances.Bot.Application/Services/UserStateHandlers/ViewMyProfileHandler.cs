@@ -13,18 +13,18 @@ namespace Acquaintances.Bot.Application.Services.UserStateHandlers;
 /// <summary>
 /// Обрабатывает сallbackQurey и само собщение для изменения описания анкеты
 /// </summary>
-public class ChangingDescriptionHandler : StateHandlerBase
+public class ViewMyProfileHandler : StateHandlerBase
 {
     private readonly ITelegramBotClient _bot;
     private readonly IServiceScopeFactory _scopeFactory;
-    public ChangingDescriptionHandler(ITelegramBotClient botClient, IServiceScopeFactory scopeFactory)
+    public ViewMyProfileHandler(ITelegramBotClient botClient, IServiceScopeFactory scopeFactory)
     {
         _bot = botClient;
         _scopeFactory = scopeFactory;
     }
 
-    public override UserStates State => UserStates.ChangingDescription;
-    public override string CallbackData => CallbackQueryData.ChangingDescription;
+    public override UserStates State => UserStates.ViewMyProfile;
+    public override string CallbackData => CallbackQueryData.ViewMyProfile;
 
 	public override async Task Handle(Update update, CancellationToken ct = default)
     {
@@ -46,30 +46,10 @@ public class ChangingDescriptionHandler : StateHandlerBase
 			return;
 		}
 
-		if (update.CallbackQuery  != null)
+		if (update.CallbackQuery != null)
 		{
-			var keyboard = BotMessagesHelper.GetStopChangesKeyboard();
-			var responceMessage = $"Введи новое описание анкеты:";
-			await _bot.SendMessageHtml(chatId, responceMessage, keyboard, cancellationToken: ct);
-			await userService.SetStateAndUpdateAsync(user, UserStates.ChangingDescription, ct);
-			return;
-		}
-
-		if (update.Message != null)
-		{
-			var inputDescription = update.Message.Text;
-			var descriptionResult = Description.Create(inputDescription);
-
-			if (descriptionResult.IsFailure)
-			{
-				await _bot.SendMessageHtml(chatId, descriptionResult.Error, cancellationToken: ct);
-				return;
-			}
-
-			user.Profile.SetDescription(descriptionResult.Value);
-			await userService.SetStateAndUpdateAsync(user, UserStates.None, ct);
-
 			await BotMessagesHelper.SendProfileAsync(_bot, chatId, user.Profile, ct);
+			await userService.SetStateAndUpdateAsync(user, UserStates.None, ct);
 		}
 	}
 }

@@ -4,6 +4,7 @@ using Acquaintances.Bot.Domain.Entities;
 using Acquaintances.Bot.Domain.Enums;
 using Acquaintances.Bot.Domain.Models;
 using CSharpFunctionalExtensions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Acquaintances.Bot.Application.Services.EntityServices;
 
@@ -72,15 +73,21 @@ public class UserService : IUserService
 		await _userRepository.UpdateAsync(user, ct);
 	}
 
-	public async Task SetStateAsync(AppUser user, UserStates state, CancellationToken ct = default)
+	public async Task SetStateAndUpdateAsync(AppUser user, UserStates state, CancellationToken ct = default)
 	{
 		user.SetState(state);
 		await _userRepository.UpdateAsync(user, ct);
 	}
 
-	public async Task SetTempProfileAsync(AppUser user, TempProfile profile, CancellationToken ct = default)
+	public async Task SetTempProfileAsync(AppUser user, TempProfile? profile, CancellationToken ct = default)
 	{
 		user.SetTempProfile(profile);
+		await _userRepository.UpdateAsync(user, ct);
+	}
+
+	public async Task ClearTempProfile(AppUser user, CancellationToken ct = default)
+	{
+		user.SetTempProfile(null);
 		await _userRepository.UpdateAsync(user, ct);
 	}
 }

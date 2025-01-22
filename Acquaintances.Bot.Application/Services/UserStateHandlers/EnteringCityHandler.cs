@@ -63,7 +63,7 @@ public class EnteringCityHandler : StateHandlerBase
 
 		tempProfile.City = cityResult.Value;
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, UserStates.EnteringGender, ct);
+		await userService.SetStateAndUpdateAsync(user, UserStates.EnteringGender, ct);
 	}
 }
 

@@ -33,7 +33,7 @@ public class SaveProfileHandler : StateHandlerBase
 		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 		var user = await userService.GetOrCreateAsync(chatId, ct);
 
-		await userService.SetStateAsync(user, UserStates.None, ct);
+		await userService.SetStateAndUpdateAsync(user, UserStates.None, ct);
 
 		var tempProfile = user.TempProfile;
 
@@ -48,10 +48,10 @@ public class SaveProfileHandler : StateHandlerBase
 		if (result.IsFailure)
 		{
 			await _bot.SendMessageHtml(chatId, result.Error, cancellationToken: ct);
+			return;
 		}
-		else
-		{
-			await BotMessagesHelper.ShowProfileAsync(_bot, chatId, user.Profile, ct);
-		}
+
+		await BotMessagesHelper.SendProfileAsync(_bot, chatId, user.Profile, ct);
+		await userService.ClearTempProfile(user, ct);
 	}
 }

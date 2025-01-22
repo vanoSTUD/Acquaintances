@@ -46,7 +46,7 @@ public class EnteringNameHandler : StateHandlerBase
 
 		var tempProfile = new TempProfile() { Name = nameResult.Value };
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, UserStates.EnteringAge, ct);
+		await userService.SetStateAndUpdateAsync(user, UserStates.EnteringAge, ct);
 	}
 }
 

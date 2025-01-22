@@ -27,6 +27,7 @@ public static class DependencyInjection
 		services.AddSingleton<StateHandlerBase, SaveProfileHandler>();
 		services.AddSingleton<StateHandlerBase, SendingPhotoHandler>();
 		services.AddSingleton<StateHandlerBase, ChangingDescriptionHandler>();
+		services.AddSingleton<StateHandlerBase, ViewMyProfileHandler>();
 
 		services.AddSingleton<CommandHandlerBase, StartCommandHandler>();
 

@@ -53,7 +53,7 @@ public class EnteringGenderHandler : StateHandlerBase
 		if (tempProfile == null)
 		{
 			await _bot.SendMessageHtml(chatId, $"Ошибка! Попробуйте {CommandNames.Start}.", cancellationToken: ct);
-			await userService.SetStateAsync(user, UserStates.None, ct);
+			await userService.SetStateAndUpdateAsync(user, UserStates.None, ct);
 			return;
 		}
 
@@ -69,7 +69,7 @@ public class EnteringGenderHandler : StateHandlerBase
 
 		tempProfile.Gender = genderResult.Value;
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, UserStates.EnteringPrefferedGender, ct);
+		await userService.SetStateAndUpdateAsync(user, UserStates.EnteringPrefferedGender, ct);
 	}
 }
 

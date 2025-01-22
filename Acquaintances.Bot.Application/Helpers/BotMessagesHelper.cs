@@ -8,10 +8,25 @@ namespace Acquaintances.Bot.Application.Helpers;
 
 public static class BotMessagesHelper
 {
-	public static async Task ShowProfileAsync(ITelegramBotClient bot, long chatId, Profile? profile, CancellationToken ct = default)
+	public static async Task SendProfileAsync(ITelegramBotClient bot, long chatId, Profile? profile, CancellationToken ct = default)
 	{
 		await ShowProfile(bot, chatId, profile, ct);
 		await ShowProfileCommands(bot, chatId, ct);
+	}
+
+	public static async Task SendNoProfileMessageAsync(ITelegramBotClient bot, long chatId,CancellationToken ct = default)
+	{
+		await bot.SendMessageHtml(chatId, $"Ошибка! У тебя нет анкеты. Попробуй {CommandNames.Start}", cancellationToken: ct);
+	}
+
+	public static InlineKeyboardMarkup GetStopChangesKeyboard()
+	{
+		return new InlineKeyboardMarkup().AddButton("Не изменять", CallbackQueryData.ViewMyProfile);
+	}
+
+	public static InlineKeyboardMarkup GetKeepCurrentKeyboard()
+	{
+		return new InlineKeyboardMarkup().AddButton("Оставить текущее", "");
 	}
 
 	private static async Task ShowProfileCommands(ITelegramBotClient bot, long chatId, CancellationToken ct = default)
@@ -20,7 +35,7 @@ public static class BotMessagesHelper
 			1 - Смотреть анкеты
 			2 - Заполнить анкету заново
 			3 - Изменить описание анкеты
-			4 - Изменить фото/видео анкеты
+			4 - Изменить фото анкеты
 			""";
 		var keyboard = new InlineKeyboardMarkup()
 			.AddButton("1")
@@ -43,4 +58,5 @@ public static class BotMessagesHelper
 		await bot.SendMessageHtml(chatId, "Твоя анкета:", cancellationToken: ct);
 		await bot.SendMediaGroup(chatId, photoGroup, cancellationToken: ct);
 	}
+
 }

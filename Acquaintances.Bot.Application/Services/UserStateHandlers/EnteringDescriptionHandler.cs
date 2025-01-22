@@ -40,17 +40,6 @@ public class EnteringDescriptionHandler : StateHandlerBase
 		using var scope = _scopeFactory.CreateScope();
 		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 		var user = await userService.GetOrCreateAsync(chatId, ct);
-
-		if (user.Profile != null)
-		{
-			user.Profile.SetDescription(descriptionResult.Value);
-			await BotMessagesHelper.ShowProfileAsync(_bot, chatId, user.Profile, ct);
-
-			await userService.SetStateAsync(user, UserStates.None, ct);
-			await userService.UpdateAsync(user, ct);
-            return;
-        }
-
 		var tempProfile = user.TempProfile;
 
 		if (tempProfile == null)
@@ -65,7 +54,7 @@ public class EnteringDescriptionHandler : StateHandlerBase
 		tempProfile.Description = descriptionResult.Value;
 
 		await userService.SetTempProfileAsync(user, tempProfile, ct);
-		await userService.SetStateAsync(user, UserStates.SendingPhotos, ct);
+		await userService.SetStateAndUpdateAsync(user, UserStates.SendingPhotos, ct);
 	}
 }
 

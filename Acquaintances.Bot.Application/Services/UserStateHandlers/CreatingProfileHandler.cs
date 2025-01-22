@@ -31,6 +31,6 @@ public class CreatingProfileHandler : StateHandlerBase
 
 		await _bot.SendMessageHtml(chatId, "Создание анкеты. \nВведи своё имя:", cancellationToken: ct);
 
-		await userService.SetStateAsync(user, UserStates.EnteringName, ct);
+		await userService.SetStateAndUpdateAsync(user, UserStates.EnteringName, ct);
 	}
 }

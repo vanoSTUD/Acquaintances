@@ -28,7 +28,7 @@ public class StartCommandHandler : CommandHandlerBase
 		using var scope = _scopeFactory.CreateScope();
 		var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 		var user = await userService.GetOrCreateAsync(chatId, ct);
-		await userService.SetStateAsync(user, UserStates.None, ct);
+		await userService.SetStateAndUpdateAsync(user, UserStates.None, ct);
 
 		var keyboard = new InlineKeyboardMarkup();
 
@@ -39,6 +39,6 @@ public class StartCommandHandler : CommandHandlerBase
 			return;
 		}
 
-		await BotMessagesHelper.ShowProfileAsync(_bot, chatId, user.Profile, ct);
+		await BotMessagesHelper.SendProfileAsync(_bot, chatId, user.Profile, ct);
 	}
 }

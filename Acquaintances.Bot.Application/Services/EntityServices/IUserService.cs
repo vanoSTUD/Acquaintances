@@ -10,7 +10,8 @@ namespace Acquaintances.Bot.Application.Services.EntityServices
 		Task<Result> AddProfileAsync(AppUser user, TempProfile profile, CancellationToken ct = default);
 		Task<AppUser> GetOrCreateAsync(long chatId, CancellationToken ct = default);
 		Task UpdateAsync(AppUser user, CancellationToken ct = default);
-		Task SetStateAsync(AppUser user, UserStates state, CancellationToken ct = default);
-		Task SetTempProfileAsync(AppUser user, TempProfile profile, CancellationToken ct = default);
+		Task SetStateAndUpdateAsync(AppUser user, UserStates state, CancellationToken ct = default);
+		Task SetTempProfileAsync(AppUser user, TempProfile? profile, CancellationToken ct = default);
+		Task ClearTempProfile(AppUser user, CancellationToken ct = default);
 	}
 }

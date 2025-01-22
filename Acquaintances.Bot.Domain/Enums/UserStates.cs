@@ -14,13 +14,10 @@ public enum UserStates
 	SendingPhotos,
 	SaveProfile,
 
-	ChangingDescription,
-	ChangingPhotos,
-	//Чужие профили
-	ViewingProfiles,
-	CreatingLikeMessage,
+
+	ViewMyProfile,
 
 	//Изменение в анкете
-	EditingProfilePhotos,
-	EditingProfileDescription
+	ChangingDescription,
+	ChangingPhotos,
 }
